@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- CallerID.com 2020 -->
+    <title>SampleApp</title>
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <link rel="stylesheet" type="text/css" href="./plugins/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="./plugins/jquery-ui.structure.min.css">
+    <link rel="stylesheet" type="text/css" href="./plugins/jquery-ui.theme.min.css">
+
+    <!-- Include jQuery -->
+    <script>
+        window.$ = window.jQuery = require("jquery");
+    </script>
+    <script src="./plugins/jquery-ui.js"></script>
+    <!-------------------->
+    <!-- UDP Code -------->
+    <script src="./base.js" type="text/javascript"></script>
+    <!-------------------->
+
+    </head>
+
+    <body>
+
+        <table style="width: 100%;">
+
+          <tr>
+            <td class="app_header" style="text-align: center;">CallerID.com Sample Application</td>
+          </tr>
+
+          <table class="app_view">
+            <tr>
+              <td class="app_call_status" style="width:35%;text-align: center;">Current Line: 
+                <span id="lbCallLine" style="padding-left: 10px;">01</span></td>
+              <td class="app_call_status" style="width:100%;text-align:center;">CallerID.com --- 770-263-7111</td>
+            </tr>
+            <tr>
+              <td colspan="2">
+
+                <div style="display: inline;">
+
+                  <div id="panLine1" class="app_call_line_idle">
+
+                    <div class="app_call_info" style="padding-top:15px;"><img id="imgLine1" src="tele.png" width="70" height="50"></span></div>
+                    <div class="app_call_info_text_line">Line 1</div>
+                    <div class="app_call_info_text_time">Time</div>
+                    <div class="app_call_info_text_callerid">CallerID</div>
+                    <div class="app_call_info" style="padding-top:15px;padding-right:10px;"><img id="imgRolodex1" src="rolodex.png" width="70" height="50"></span></div>
+
+                  </div>
+
+                  <div id="panLine2" class="app_call_line_ring">
+
+                    <div class="app_call_info" style="padding-top:15px;"><img id="imgLine2" src="tele.png" width="70" height="50"></span></div>
+                    <div class="app_call_info_text_line">Line 2</div>
+                    <div class="app_call_info_text_time">Time</div>
+                    <div class="app_call_info_text_callerid">CallerID</div>
+                    <div class="app_call_info" style="padding-top:15px;padding-right:10px;"><img id="imgRolodex2" src="rolodex.png" width="70" height="50"></span></div>
+
+                  </div>
+
+                  <div id="panLine3" class="app_call_line_inbound">
+
+                    <div class="app_call_info" style="padding-top:15px;"><img id="imgLine3" src="tele.png" width="70" height="50"></span></div>
+                    <div class="app_call_info_text_line">Line 3</div>
+                    <div class="app_call_info_text_time">Time</div>
+                    <div class="app_call_info_text_callerid">CallerID</div>
+                    <div class="app_call_info" style="padding-top:15px;padding-right:10px;"><img id="imgRolodex3" src="rolodex.png" width="70" height="50"></span></div>
+
+                  </div>
+
+                  <div id="panLine4" class="app_call_line_outbound">
+
+                    <div class="app_call_info" style="padding-top:15px;"><img id="imgLine4" src="tele.png" width="70" height="50"></span></div>
+                    <div class="app_call_info_text_line">Line 4</div>
+                    <div class="app_call_info_text_time">Time</div>
+                    <div class="app_call_info_text_callerid">CallerID</div>
+                    <div class="app_call_info" style="padding-top:15px;padding-right:10px;"><img id="imgRolodex4" src="rolodex.png" width="70" height="50"></span></div>
+                  
+                  </div>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          </table>
+
+        </table>
+
+        <div style="text-align: right;">
+        
+          <span style="font-size: small;">CallerID.com 2020</span>
+        
+        </div>
+
+    </body>
+
+</html>

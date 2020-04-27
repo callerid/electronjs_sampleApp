@@ -1,0 +1,26 @@
+{
+  "name": "sampleapp",
+  "version": "1.0.0",
+  "description": "Sample CallerID.com compatible caller ID display app.",
+  "main": "main.js",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "electron": "^8.0.0",
+    "electron-builder": "^22.5.1"
+  },
+  "scripts": {
+    "start": "sass main.scss main.css & electron .",
+    "pack": "electron-builder --dir",
+    "dist_mac": "electron-builder --macos",
+    "dist": "electron-builder --ia32"
+  },
+  "build": {
+    "appId": "sampleapp.callerid.com",
+    "mac": {
+      "category": "callerid.diagnostic.tools"
+    }
+  },
+  "author": "CallerID.com",
+  "license": "ISC"
+}

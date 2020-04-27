@@ -1,0 +1,150 @@
+// Colors
+$bg-color: #e9fcfb;
+$dot-color: #bfd1d0;
+
+// Dimensions
+$dot-size: 1px;
+$dot-space: 2px;
+
+body
+{
+    background-color: #e9fcfb;
+    font-family: Arial, Helvetica, sans-serif;
+
+    background:
+		linear-gradient(90deg, $bg-color ($dot-space - $dot-size), transparent 1%) center,
+		linear-gradient($bg-color ($dot-space - $dot-size), transparent 1%) center,
+        $dot-color;
+        
+    background-size: $dot-space $dot-space;
+    
+}
+
+.app_header
+{
+    width: 100%;
+    background-image: linear-gradient(#b8f8f6, #66a3a1);
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    height: 40px;
+    padding-left: 20px;
+    vertical-align: bottom;
+    padding-bottom: 10px;
+    font-size: x-large;
+    font-weight: bold;
+    color: rgb(56, 59, 59);
+}
+
+.app_view
+{
+    width: 100%;
+}
+
+.app_call_status
+{
+    background-image: linear-gradient(#B9CDDA, rgb(139, 153, 163));
+    border-radius: 5px;
+    height: 35px;
+    color: rgb(56, 59, 59);
+    letter-spacing: 1.5px;
+    font-weight: bold;
+    font-size: larger;
+}
+
+.app_call_line_idle
+{
+    width: 100%;
+    background-image: linear-gradient(#5C6B73, rgb(66, 77, 83));
+    border-radius: 10px;
+    height: 80px;
+    color: rgb(231, 243, 245);
+    letter-spacing: 1.5px;
+    vertical-align: middle;
+    display:inline-flex;
+    width: 100%;
+    height: 80px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.app_call_line_ring
+{
+    width: 100%;
+    background-image: linear-gradient(#D999B9, rgb(179, 126, 152));
+    border-radius: 10px;
+    height: 80px;
+    color: rgb(231, 243, 245);
+    letter-spacing: 1.5px;
+    vertical-align: middle;
+    display:inline-flex;
+    width: 100%;
+    height: 80px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.app_call_line_inbound
+{
+    width: 100%;
+    background-image: linear-gradient(#91C499, rgb(107, 145, 113));
+    border-radius: 10px;
+    height: 80px;
+    color: rgb(231, 243, 245);
+    letter-spacing: 1.5px;
+    vertical-align: middle;
+    display:inline-flex;
+    width: 100%;
+    height: 80px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.app_call_line_outbound
+{
+    background-image: linear-gradient(rgb(88, 130, 192), rgb(70, 103, 153));
+    border-radius: 10px;
+    color: rgb(231, 243, 245);
+    letter-spacing: 1.5px;
+    vertical-align: middle;
+    display:inline-flex;
+    width: 100%;
+    height: 80px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.app_call_info
+{
+    padding-left: 15px;
+    padding-top:30px;
+    padding-bottom: 30px;
+}
+
+.app_call_info_text_line
+{
+    padding-left: 15px;
+    padding-top: 35px;
+    margin-left: 15px;
+    border-left: rgb(215, 226, 226) 1px solid;
+    width: 20%;
+    text-align: center;
+}
+
+.app_call_info_text_time
+{
+    padding-left: 15px;
+    padding-top: 35px;
+    margin-left: 15px;
+    border-left: rgb(215, 226, 226) 1px solid;
+    width: 45%;
+    text-align: center;
+}
+
+.app_call_info_text_callerid
+{
+    padding-left: 15px;
+    padding-top: 35px;
+    margin-left: 15px;
+    border-left: rgb(215, 226, 226) 1px solid;
+    width: 100%;
+}

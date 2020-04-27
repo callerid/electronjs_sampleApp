@@ -1,0 +1,126 @@
+body {
+  background-color: #e9fcfb;
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(90deg, #e9fcfb 1px, transparent 1%) center, linear-gradient(#e9fcfb 1px, transparent 1%) center, #bfd1d0;
+  background-size: 2px 2px;
+}
+
+.app_header {
+  width: 100%;
+  background-image: linear-gradient(#b8f8f6, #66a3a1);
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  height: 40px;
+  padding-left: 20px;
+  vertical-align: bottom;
+  padding-bottom: 10px;
+  font-size: x-large;
+  font-weight: bold;
+  color: #383b3b;
+}
+
+.app_view {
+  width: 100%;
+}
+
+.app_call_status {
+  background-image: linear-gradient(#B9CDDA, #8b99a3);
+  border-radius: 5px;
+  height: 35px;
+  color: #383b3b;
+  letter-spacing: 1.5px;
+  font-weight: bold;
+  font-size: larger;
+}
+
+.app_call_line_idle {
+  width: 100%;
+  background-image: linear-gradient(#5C6B73, #424d53);
+  border-radius: 10px;
+  height: 80px;
+  color: #e7f3f5;
+  letter-spacing: 1.5px;
+  vertical-align: middle;
+  display: inline-flex;
+  width: 100%;
+  height: 80px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.app_call_line_ring {
+  width: 100%;
+  background-image: linear-gradient(#D999B9, #b37e98);
+  border-radius: 10px;
+  height: 80px;
+  color: #e7f3f5;
+  letter-spacing: 1.5px;
+  vertical-align: middle;
+  display: inline-flex;
+  width: 100%;
+  height: 80px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.app_call_line_inbound {
+  width: 100%;
+  background-image: linear-gradient(#91C499, #6b9171);
+  border-radius: 10px;
+  height: 80px;
+  color: #e7f3f5;
+  letter-spacing: 1.5px;
+  vertical-align: middle;
+  display: inline-flex;
+  width: 100%;
+  height: 80px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.app_call_line_outbound {
+  background-image: linear-gradient(#5882c0, #466799);
+  border-radius: 10px;
+  color: #e7f3f5;
+  letter-spacing: 1.5px;
+  vertical-align: middle;
+  display: inline-flex;
+  width: 100%;
+  height: 80px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.app_call_info {
+  padding-left: 15px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.app_call_info_text_line {
+  padding-left: 15px;
+  padding-top: 35px;
+  margin-left: 15px;
+  border-left: #d7e2e2 1px solid;
+  width: 20%;
+  text-align: center;
+}
+
+.app_call_info_text_time {
+  padding-left: 15px;
+  padding-top: 35px;
+  margin-left: 15px;
+  border-left: #d7e2e2 1px solid;
+  width: 45%;
+  text-align: center;
+}
+
+.app_call_info_text_callerid {
+  padding-left: 15px;
+  padding-top: 35px;
+  margin-left: 15px;
+  border-left: #d7e2e2 1px solid;
+  width: 100%;
+}
+
+/*# sourceMappingURL=main.css.map */
