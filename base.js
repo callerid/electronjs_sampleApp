@@ -211,6 +211,8 @@ function call_ring(line, datetime)
 {
     // Ring image
     var str_updater = outputs[line][o_img_line];
+    $("#" + str_updater).removeClass();
+    $("#" + str_updater).addClass("blink_image");
 
     // Panel
     str_updater = outputs[line][o_pan];
@@ -224,8 +226,9 @@ function call_ring(line, datetime)
 
 function call_off_hook(line, datetime)
 {
-    // Stop blinking line image and change tint to black
+    // Stop blinking line image
     var str_updater = outputs[line][o_img_line];
+    $("#" + str_updater).removeClass();
 
     str_updater = outputs[line][o_time];
     $("#" + str_updater).text(datetime);
@@ -234,7 +237,7 @@ function call_off_hook(line, datetime)
 
 function call_on_hook(line, datetime)
 {
-    // Stop blinking line image and remove tint (make white)
+    // Stop blinking line image
     var str_updater = outputs[line][o_img_line];
 
     str_updater = outputs[line][o_time];
@@ -267,12 +270,22 @@ function call_start(line, datetime, number, name, io)
         break;
     }
 
+    var caller_id = number.padEnd(14," ") + name.padEnd(15, " ");
+    
     str_updater = outputs[line][o_callerid];
-    $("#" + str_updater).text(number.padEnd(14," ") + name.padEnd(15, " "));
+    $("#" + str_updater).text(caller_id);
 
     str_updater = outputs[line][o_time];
     $("#" + str_updater).text(datetime);
 
+    $("#lbCallLine").text((line + 1).toString().padStart(2, "0"));
+    $("#lbCallCallerID").text(caller_id);
+
+    // Change to highlighted call status
+    $("#panCurrentLine").removeClass();
+    $("#panCurrentLine").addClass("app_call_status_highlight");
+    $("#panCurrentCallerID").removeClass();
+    $("#panCurrentCallerID").addClass("app_call_status_highlight");
 }
 
 function call_end(line, datetime, number, name)
@@ -291,6 +304,12 @@ function call_end(line, datetime, number, name)
 
     str_updater = outputs[line][o_time];
     $("#" + str_updater).text(datetime);
+
+    // Change to highlighted call status
+    $("#panCurrentLine").removeClass();
+    $("#panCurrentLine").addClass("app_call_status");
+    $("#panCurrentCallerID").removeClass();
+    $("#panCurrentCallerID").addClass("app_call_status");
 
 }
 
