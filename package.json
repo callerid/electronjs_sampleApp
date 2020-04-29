@@ -4,6 +4,7 @@
   "description": "Sample CallerID.com compatible caller ID display app.",
   "main": "main.js",
   "dependencies": {
+    "jquery": "^3.5.0"
   },
   "devDependencies": {
     "electron": "^8.0.0",

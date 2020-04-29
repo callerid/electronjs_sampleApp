@@ -1,6 +1,6 @@
 // Colors
 $bg-color: #e9fcfb;
-$dot-color: #bfd1d0;
+$dot-color: rgb(182, 142, 130);
 
 // Dimensions
 $dot-size: 1px;
@@ -23,7 +23,7 @@ body
 .app_header
 {
     width: 100%;
-    background-image: linear-gradient(#b8f8f6, #66a3a1);
+    background-image: linear-gradient(#5C6B73, rgb(66, 77, 83));
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
     height: 40px;
@@ -32,7 +32,7 @@ body
     padding-bottom: 10px;
     font-size: x-large;
     font-weight: bold;
-    color: rgb(56, 59, 59);
+    color: rgb(231, 243, 245);
 }
 
 .app_view
@@ -42,10 +42,10 @@ body
 
 .app_call_status
 {
-    background-image: linear-gradient(#B9CDDA, rgb(139, 153, 163));
+    background-image: linear-gradient(#5C6B73, rgb(66, 77, 83));
     border-radius: 5px;
     height: 35px;
-    color: rgb(56, 59, 59);
+    color: rgb(231, 243, 245);
     letter-spacing: 1.5px;
     font-weight: bold;
     font-size: larger;
@@ -146,5 +146,6 @@ body
     padding-top: 35px;
     margin-left: 15px;
     border-left: rgb(215, 226, 226) 1px solid;
+    border-right: rgb(215, 226, 226) 1px solid;
     width: 100%;
 }
