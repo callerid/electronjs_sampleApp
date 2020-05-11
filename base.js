@@ -5,31 +5,34 @@ const dgram = require('dgram');
 const os = require('os');
 const app = require('electron').remote.app;
 
+var pjson = require('./package.json');
+const app_version = pjson.version;
+
 var server3520;
-var server6699;
 
 const HOST = '0.0.0.0';
 var bound3520 = false;
-var bound6699 = false;
 var last_detailed_record_reception = "";
 var last_call_record_reception = "";
 
 var outputs = [
-    ["imgLine1", "lbLine1", "lbTime1", "lbCallerID1", "imgRolodex1", "panLine1"],
-    ["imgLine2", "lbLine2", "lbTime2", "lbCallerID2", "imgRolodex2", "panLine2"],
-    ["imgLine3", "lbLine3", "lbTime3", "lbCallerID3", "imgRolodex3", "panLine3"],
-    ["imgLine4", "lbLine4", "lbTime4", "lbCallerID4", "imgRolodex4", "panLine4"],
+    ["imgLine1", "lbLine1", "lbTime1", "lbCallerIDNumber1", "lbCallerIDName1", "imgRolodex1", "panLine1"],
+    ["imgLine2", "lbLine2", "lbTime2", "lbCallerIDNumber2", "lbCallerIDName2", "imgRolodex2", "panLine2"],
+    ["imgLine3", "lbLine3", "lbTime3", "lbCallerIDNumber3", "lbCallerIDName3", "imgRolodex3", "panLine3"],
+    ["imgLine4", "lbLine4", "lbTime4", "lbCallerIDNumber4", "lbCallerIDName4", "imgRolodex4", "panLine4"],
 ];
 
 var o_img_line = 0;
 var o_line = 1;
 var o_time = 2;
-var o_callerid = 3;
-var o_img_rolodex = 4;
-var o_pan = 5;
+var o_callerid_num = 3;
+var o_callerid_name = 4;
+var o_img_rolodex = 5;
+var o_pan = 6;
 
 function bind()
 {
+    
     if(!bound3520)
     {
         server3520 = dgram.createSocket({type:"udp4", reuseAddr:true});
@@ -38,6 +41,8 @@ function bind()
         server3520.on('error', function(error){
 
             console.log('3520 failed to bind.');
+            $("#lbBindStatus").text("UDP port 3520 bind FAILED. Close any programs using Caller ID.");
+            $("#lbBindStatus").attr("style", "float:left;font-size:small;font-weight: bold;color:red;");
             bound3520 = false;
         
         });
@@ -48,6 +53,8 @@ function bind()
             server3520.setBroadcast(true);
             var address = server3520.address();
             console.log('UDP Server listening on ' + address.address + ':' + address.port);
+            $("#lbBindStatus").text("UDP port 3520 bind success.");
+            $("#lbBindStatus").attr("style", "float:left;font-size:small;font-weight: bold;");
         
         });
         
@@ -58,35 +65,7 @@ function bind()
         });
 
     }
-
-    if(!bound6699)
-    {
-        server6699 = dgram.createSocket({type:"udp4", reuseAddr:true});
-        server6699.bind(6699, HOST);
-
-        server6699.on('error', function(error){
-
-            console.log('6699 failed to bind.');
-            bound6699 = false;
-        
-        });
-        
-        server6699.on('listening', function() {
-        
-            bound6699 = true;
-            server6699.setBroadcast(true);
-            var address = server6699.address();
-            console.log('UDP Server listening on ' + address.address + ':' + address.port);
-        
-        });
-        
-        server6699.on('message', function(message, remote) {
-        
-            check_for_call_record(message);
-        
-        });
-
-    }
+    
 }
 
 function check_for_call_record(message)
@@ -127,6 +106,17 @@ function check_for_call_record(message)
         var date = groups[3];
         var time = groups[4];
 
+        var hours = time.substr(0, time.indexOf(":"));
+        var hrs = parseInt(hours);
+        var am_pm = "AM";
+        if(hrs > 12) 
+        {
+            am_pm = "PM";
+            hrs -= 12;
+        }
+
+        time = hrs + ":" + time.substr(time.indexOf(":") + 1) + " " + am_pm;
+
         var line = parseInt(ln) - 1;
 
         switch(type)
@@ -139,13 +129,13 @@ function check_for_call_record(message)
 
             case "F":
 
-                call_off_hook(line, date + " " + time)
+                call_off_hook(line, time + " " + date)
 
             break;
 
             case "N":
 
-                call_on_hook(line, date + " " + time);
+                call_on_hook(line, time + " " + date);
 
             break;
         }
@@ -185,6 +175,11 @@ function check_for_call_record(message)
         var rings = groups[6];
         var date = groups[7];
         var time = groups[8];
+
+        var hours = time.substr(0, time.indexOf(":"));
+        var hrs = parseInt(hours);
+        time = hrs + ":" + time.substr(time.indexOf(":") + 1);
+
         var num = groups[9].padEnd(14, "&nbsp;");
         var name = groups[10].padEnd(15, "&nbsp;");
         
@@ -192,11 +187,11 @@ function check_for_call_record(message)
 
         if(se == "S")
         {
-            call_start(line, date + " " + time, num, name, io);
+            call_start(line, time + "<br/>" + date, num, name, io);
         }
         else if(se == "E")
         {
-            call_end(line, date + " " + time, num, name);
+            call_end(line, time + "<br/>" + date, num, name);
         }
 
     }
@@ -270,22 +265,21 @@ function call_start(line, datetime, number, name, io)
         break;
     }
 
-    var caller_id = number.padEnd(14," ") + name.padEnd(15, " ");
+    number = number.padEnd(14, " ") 
+    name = name.padEnd(15, " ");
     
-    str_updater = outputs[line][o_callerid];
-    $("#" + str_updater).text(caller_id);
+    str_updater = outputs[line][o_callerid_num];
+    $("#" + str_updater).text(number);
+
+    str_updater = outputs[line][o_callerid_name];
+    $("#" + str_updater).text(name);
 
     str_updater = outputs[line][o_time];
-    $("#" + str_updater).text(datetime);
+    $("#" + str_updater).html(datetime);
 
     $("#lbCallLine").text((line + 1).toString().padStart(2, "0"));
-    $("#lbCallCallerID").text(caller_id);
+    $("#lbCallCallerID").text(number + " " + name);
 
-    // Change to highlighted call status
-    $("#panCurrentLine").removeClass();
-    $("#panCurrentLine").addClass("app_call_status_highlight");
-    $("#panCurrentCallerID").removeClass();
-    $("#panCurrentCallerID").addClass("app_call_status_highlight");
 }
 
 function call_end(line, datetime, number, name)
@@ -299,17 +293,28 @@ function call_end(line, datetime, number, name)
     $("#" + str_updater).removeClass();
     $("#" + str_updater).addClass("app_call_line_idle");
 
-    str_updater = outputs[line][o_callerid];
-    $("#" + str_updater).text(number.padEnd(14," ") + name.padEnd(15, " "));
+    str_updater = outputs[line][o_callerid_num];
+    $("#" + str_updater).text(number);
+
+    str_updater = outputs[line][o_callerid_name];
+    $("#" + str_updater).text(name);
 
     str_updater = outputs[line][o_time];
-    $("#" + str_updater).text(datetime);
+    $("#" + str_updater).html(datetime);
 
-    // Change to highlighted call status
-    $("#panCurrentLine").removeClass();
-    $("#panCurrentLine").addClass("app_call_status");
-    $("#panCurrentCallerID").removeClass();
-    $("#panCurrentCallerID").addClass("app_call_status");
+    for(var i = 0; i < 4; i++)
+    {
+        if(line == i)
+        {
+            str_updater = outputs[i][o_line];
+            $("#" + str_updater).html("Ln " + (i + 1).toString() + "<br/>Last");
+        }
+        else
+        {
+            str_updater = outputs[i][o_line];
+            $("#" + str_updater).html("Ln " + (i + 1).toString());
+        }
+    }
 
 }
 
