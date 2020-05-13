@@ -328,3 +328,7 @@ function array_to_ascii(array)
     });
     return str;
 }
+
+// ----------------------------------------------------------------
+// Some Resources
+// - https://www.sqlitetutorial.net/sqlite-nodejs/
