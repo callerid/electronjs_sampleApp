@@ -332,3 +332,4 @@ function array_to_ascii(array)
 // ----------------------------------------------------------------
 // Some Resources
 // - https://www.sqlitetutorial.net/sqlite-nodejs/
+// - https://www.aljaiban.com/post/setting-up-electron-with-sqlite-on-windows

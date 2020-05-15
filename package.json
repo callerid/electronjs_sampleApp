@@ -9,7 +9,8 @@
   },
   "devDependencies": {
     "electron": "^8.0.0",
-    "electron-builder": "^22.6.0"
+    "electron-builder": "^22.6.0",
+    "electron-rebuild": "^1.11.0"
   },
   "scripts": {
     "start": "sass main.scss main.css & electron .",
