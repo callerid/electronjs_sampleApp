@@ -1,18 +1,31 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, Menu, MenuItem } = require('electron')
 
 function createWindow () {
   // Create the browser window.
   let win = new BrowserWindow({
     width: 800,
-    height: 450,
+    height: 460,
     webPreferences: {
       nodeIntegration: true
     }
   })
 
+  var main_menu = [
+    {
+      label:'Call Log', 
+      click(item, focused_window)
+      {
+        focused_window.webContents.executeJavaScript("open_call_log_window()");
+      }
+    }
+  ];
+
+  var template_menu = Menu.buildFromTemplate(main_menu);
+
+  Menu.setApplicationMenu(template_menu);
+
   // and load the index.html of the app.
   win.loadFile('frmMain.html');
-  win.removeMenu();
 
   // Uncomment below for JS debugging
   win.webContents.openDevTools();

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- CallerID.com 2020 -->
+    <title>CallerID.com Call Log</title>
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <link rel="stylesheet" type="text/css" href="./plugins/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="./plugins/jquery-ui.structure.min.css">
+    <link rel="stylesheet" type="text/css" href="./plugins/jquery-ui.theme.min.css">
+
+    <!-- Include jQuery -->
+    <script>
+        window.$ = window.jQuery = require("jquery");
+    </script>
+    <script src="./plugins/jquery-ui.js"></script>
+    <!-------------------->
+    <!-- Database Code -------->
+    <script src="./db.js" type="text/javascript"></script>
+    <!-------------------->
+    <script>
+
+        $(document).ready(function() {
+
+            eventEmitter.on('call_log_load', function(log_entries){
+
+                var template = `
+
+                    <tr class="[call_type]">
+                        <td class="call_log_row_line">[line]</td>
+                        <td class="call_log_row_io">[io]</td>
+                        <td class="call_log_row_se">[se]</td>
+                        <td class="call_log_row_dur">[dur]</td>
+                        <td class="call_log_row_cs">[cs]</td>
+                        <td class="call_log_row_rings">[rings]</td>
+                        <td class="call_log_row_date">[date]</td>
+                        <td class="call_log_row_time">[time]</td>
+                        <td class="call_log_row_number">[number]</td>
+                        <td class="call_log_row_name">[name]</td>
+                    </tr>
+
+                `;
+
+                var insert_entries_string = "";
+                for(var i = 0; i < log_entries.length; i++)
+                {
+                    var new_entry = template;
+                    
+                    if(log_entries[i][3] != "S" && log_entries[i][3] != "E")
+                    {
+                        new_entry = new_entry.replace("[call_type]", "call_log_row_detailed");
+                    }
+                    else
+                    {
+                        if(log_entries[i][2] == "I")
+                        {
+                            new_entry = new_entry.replace("[call_type]", "call_log_row_inbound");
+                        }
+                        else
+                        {
+                            new_entry = new_entry.replace("[call_type]", "call_log_row_outbound");
+                        }
+                    }
+                    
+                    new_entry = new_entry.replace("[line]", log_entries[i][1]);
+                    new_entry = new_entry.replace("[io]", log_entries[i][2]);
+                    new_entry = new_entry.replace("[se]", log_entries[i][3]);
+                    new_entry = new_entry.replace("[dur]", log_entries[i][4]);
+                    new_entry = new_entry.replace("[cs]", log_entries[i][5]);
+                    new_entry = new_entry.replace("[rings]", log_entries[i][6]);
+                    new_entry = new_entry.replace("[date]", log_entries[i][7]);
+                    new_entry = new_entry.replace("[time]", log_entries[i][8]);
+                    new_entry = new_entry.replace("[number]", log_entries[i][9]);
+                    new_entry = new_entry.replace("[name]", log_entries[i][10]);
+
+
+                    insert_entries_string += new_entry;
+                }
+
+                var table_start = "<table class='call_log_entries'>";
+                var table_end = "</table>";
+
+                $("#call_log_rows").html(table_start + insert_entries_string + table_end);
+
+            });
+
+            get_full_call_log();
+
+        });
+
+    </script>
+    </head>
+
+    <body>
+
+        <table class="call_log_view">
+
+            <tr class="call_log_row_header">
+                <td class="call_log_row_line" style="width: 20px;">Ln</td>
+                <td class="call_log_row_io" style="width: 20px;">IO</td>
+                <td class="call_log_row_se" style="width: 20px;">SE</td>
+                <td class="call_log_row_dur" style="width: 30px;">Dur</td>
+                <td class="call_log_row_cs" style="width: 20px;">CS</td>
+                <td class="call_log_row_rings" style="width: 20px;">R</td>
+                <td class="call_log_row_date" style="width: 57px;">Date</td>
+                <td class="call_log_row_time" style="width: 70px;">Time</td>
+                <td class="call_log_row_number" style="width: 100px;">Number</td>
+                <td class="call_log_row_name" style="width: 118px;">Name</td>
+            </tr>
+
+        </table>
+
+        <div id="call_log_rows">
+
+            <!-- Call Log Entries -->
+
+        </div>
+
+    </body>
+
+</html>

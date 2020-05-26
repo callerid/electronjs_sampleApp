@@ -140,6 +140,8 @@ function check_for_call_record(message)
             break;
         }
 
+        insert_call(line, type, " ", "    ", " ", "  ", date, time, "              ", "               ");
+
     }
     
     // Full call record
@@ -193,6 +195,8 @@ function check_for_call_record(message)
         {
             call_end(line, time + "<br/>" + date, num, name);
         }
+
+        insert_call(line, io, se, dur, cs, rings, date, time, num, name);
 
     }
 }
@@ -315,6 +319,76 @@ function call_end(line, datetime, number, name)
             $("#" + str_updater).html("Ln " + (i + 1).toString());
         }
     }
+
+}
+
+// --------------------------------------------------------------------
+// Windows
+// --------------------------------------------------------------------
+var win_call_log;
+function open_call_log_window()
+{
+    const electron = require('electron');
+    const BrowserWindow = electron.remote.BrowserWindow;
+
+    if(win_call_log != null)
+    {
+        win_call_log.close();
+    }
+
+    win_call_log = new BrowserWindow({
+        width: 800,
+        height: 450,
+        webPreferences: {
+            nodeIntegration: true
+        }
+    });
+
+    win_call_log.on("close", () => {
+        win_call_log = null;
+    });
+
+    // and load the index.html of the app.
+    win_call_log.loadFile('frmCallLog.html');
+    win_call_log.removeMenu();
+    
+    // Uncomment below for JS debugging
+    //win_call_log.webContents.openDevTools();
+
+}
+
+var win_rolodex;
+function open_rolodex_window(lookup_number)
+{
+
+    if(lookup_number.length < 1) return;
+
+    const electron = require('electron');
+    const BrowserWindow = electron.remote.BrowserWindow;
+
+    if(win_rolodex != null)
+    {
+        win_rolodex.close();
+    }
+
+    win_rolodex = new BrowserWindow({
+        width: 800,
+        height: 450,
+        webPreferences: {
+            nodeIntegration: true
+        }
+    });
+
+    win_rolodex.on("close", () => {
+        win_call_log = null;
+    });
+
+    // and load the index.html of the app.
+    win_rolodex.loadFile('frmRolodex.html');
+    win_rolodex.removeMenu();
+    
+    // Uncomment below for JS debugging
+    //win_rolodex.webContents.openDevTools();
 
 }
 

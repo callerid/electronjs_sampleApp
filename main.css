@@ -165,4 +165,161 @@ body {
   /* Opera and prob css3 final iteration */
 }
 
+.call_log_view {
+  width: 100%;
+}
+
+.call_log_entries {
+  width: 100%;
+  height: 330px;
+  display: block;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  scrollbar-base-color: #424d53;
+}
+
+.call_log_row_header {
+  width: 100%;
+  background-image: linear-gradient(#5C6B73, #424d53);
+  color: #e7f3f5;
+  letter-spacing: 1.5px;
+  vertical-align: middle;
+  height: 55px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.call_log_row_inbound {
+  background-image: linear-gradient(#a2ecbb, #75a785);
+  color: #313435;
+  font-weight: bold;
+  vertical-align: middle;
+  text-align: center;
+  width: 100%;
+}
+
+.call_log_row_outbound {
+  background-image: linear-gradient(#92cce9, #5f8497);
+  color: #313435;
+  font-weight: bold;
+  vertical-align: middle;
+  text-align: center;
+  width: 100%;
+}
+
+.call_log_row_detailed {
+  background-image: linear-gradient(#d8e0e4, #8e9396);
+  color: #313435;
+  font-weight: bold;
+  vertical-align: middle;
+  text-align: center;
+  width: 100%;
+}
+
+.call_log_row_line {
+  width: 34px;
+  letter-spacing: 1.5px;
+  vertical-align: middle;
+  height: 55px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.call_log_row_io {
+  width: 30px;
+  letter-spacing: 1.5px;
+  vertical-align: middle;
+  height: 55px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.call_log_row_se {
+  width: 36px;
+  letter-spacing: 1.5px;
+  vertical-align: middle;
+  height: 55px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.call_log_row_dur {
+  width: 50px;
+  letter-spacing: 1.5px;
+  vertical-align: middle;
+  height: 55px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.call_log_row_cs {
+  width: 38px;
+  letter-spacing: 1.5px;
+  vertical-align: middle;
+  height: 55px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.call_log_row_rings {
+  width: 30px;
+  letter-spacing: 1.5px;
+  vertical-align: middle;
+  height: 55px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.call_log_row_date {
+  width: 85px;
+  letter-spacing: 1.5px;
+  vertical-align: middle;
+  height: 55px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.call_log_row_time {
+  width: 102px;
+  letter-spacing: 1.5px;
+  vertical-align: middle;
+  height: 55px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.call_log_row_number {
+  width: 147px;
+  letter-spacing: 1.5px;
+  vertical-align: middle;
+  height: 55px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.call_log_row_name {
+  width: 160px;
+  letter-spacing: 1.5px;
+  vertical-align: middle;
+  height: 55px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+table::-webkit-scrollbar {
+  width: 12px;
+}
+
+table::-webkit-scrollbar-track {
+  background: #5C6B73;
+}
+
+table::-webkit-scrollbar-thumb {
+  background-color: #c5d2da;
+  border-radius: 20px;
+  border: 3px solid #454e53;
+}
+
 /*# sourceMappingURL=main.css.map */

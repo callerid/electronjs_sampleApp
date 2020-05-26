@@ -26,6 +26,41 @@
 
         // Load app version
         $("#lbAppVersion").text(app_version);
+        
+        // Rolodex Clicks --
+        $("#imgRolodex1").on('click', () => {
+
+          var lookup_number = $("#lbCallerIDNumber1").text();
+
+          open_rolodex_window(lookup_number);
+
+        });
+
+        $("#imgRolodex2").on('click', () => {
+
+          var lookup_number = $("#lbCallerIDNumber2").text();
+
+          open_rolodex_window(lookup_number);
+
+        });
+
+        $("#imgRolodex3").on('click', () => {
+
+          var lookup_number = $("#lbCallerIDNumber3").text();
+
+          open_rolodex_window(lookup_number);
+
+        });
+
+        $("#imgRolodex4").on('click', () => {
+
+          var lookup_number = $("#lbCallerIDNumber4").text();
+
+          open_rolodex_window(lookup_number);
+
+        });
+
+        // ------------------
 
       });
 

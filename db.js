@@ -1,4 +1,8 @@
 const sqlite3 = require('sqlite3').verbose();
+const events = require('events');
+
+var eventEmitter = new events.EventEmitter();
+var call_log_entries = [];
 
 // --------------------------------------------------------------
 // Database creation/closure
@@ -37,6 +41,8 @@ function close_database()
 // --------------------------------------------------------------
 function create_log_table()
 {
+    open_database();
+
     database.run("CREATE TABLE IF NOT EXISTS call_log (id INTEGER PRIMARY KEY NOT NULL, " + 
     "line CHAR(2), io CHAR(1), se CHAR(1), dur CHAR(4), cs CHAR(1), rings CHAR(3), call_date CHAR(30), " +
     "call_time CHAR(30), number CHAR(15), name CHAR(15));",[], (err) =>{
@@ -47,11 +53,15 @@ function create_log_table()
 
     });
 
+    close_database();
+
 }
 
 function insert_call(ln, io, se, dur, cs, rings, date, time, number, name)
 {
-    database.run("INSERT INTO call_log (ln, io, se, dur, cs, rings, call_date, call_time, number, name) " +
+    open_database();
+
+    database.run("INSERT INTO call_log (line, io, se, dur, cs, rings, call_date, call_time, number, name) " +
     " VALUES (?,?,?,?,?,?,?,?,?,?);", [ln, io, se, dur, cs, rings, date, time, number, name], (err) => {
 
         if(err) return console.error("SQL (insertion) ERROR " + err.message);
@@ -59,10 +69,14 @@ function insert_call(ln, io, se, dur, cs, rings, date, time, number, name)
         console.log("Inserted " + name + " into call log table.");
 
     });
+
+    close_database();
 }
 
-function get_full_call_log()
+function get_full_call_log(eventHandler)
 {
+    open_database();
+    
     database.all("SELECT * FROM call_log;", [], (err, rows) => {
         
         if (err) {
@@ -77,9 +91,27 @@ function get_full_call_log()
         }
         
         console.log("Call Log found and populated; returning...");
-        return rows;
+        
+        call_log_entries = [];
+        for(var i = 0; i < rows.length; i++)
+        {
+            call_log_entries.push(rows[i]);
+        }
 
-      });
+        var temp = [];
+
+        for(var i = 0; i < call_log_entries.length; i++)
+        {
+            temp.push(Object.values(call_log_entries[i]));
+        }
+
+        call_log_entries = temp;
+
+        eventEmitter.emit('call_log_load', call_log_entries);
+
+    });
+
+    close_database();
 }
 
 // --------------------------------------------------------------
@@ -87,6 +119,8 @@ function get_full_call_log()
 // --------------------------------------------------------------
 function create_client_table()
 {
+    open_database();
+
     database.run("CREATE TABLE IF NOT EXISTS clients (id INTEGER PRIMARY KEY NOT NULL, lookup_number CHAR(20), company_name CHAR(200), callerid_name CHAR(200));",[], (err) =>{
 
         if(err) return console.error("SQL (create table) ERROR " + err.message);
@@ -95,10 +129,14 @@ function create_client_table()
 
     });
 
+    close_database();
+
 }
 
 function insert_client(company_name, lookup_number, callerid_name)
 {
+    open_database();
+
     database.run("INSERT INTO clients (lookup_number, company_name, callerid_name) VALUES (?, " +
     "?,?);", [lookup_number, company_name, callerid_name], (err) => {
 
@@ -107,10 +145,14 @@ function insert_client(company_name, lookup_number, callerid_name)
         console.log("Inserted " + company_name + " into clients table.");
 
     });
+
+    close_database();
 }
 
 function get_client_from_number(lookup_number)
 {
+    open_database();
+
     database.all("SELECT * FROM clients WHERE lookup_number = ?;", [lookup_number], (err, rows) => {
         
         if (err) {
@@ -128,13 +170,9 @@ function get_client_from_number(lookup_number)
         return rows[0];
 
       });
-}
 
-// Establish connection to SQLite database
-open_database();
+      close_database();
+}
 
 create_log_table();
 create_client_table();
-
-insert_client("CallerID Company", "770-263-7111", "CallerID.com");
-get_client_from_number("770-263-7111");
