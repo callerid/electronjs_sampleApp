@@ -59,6 +59,10 @@ Logging a call into a SQLite database (named, in this case, 'database.db3') take
   2. Parse data into fields
   3. Insert into SQLite table
   
+An example of how the Call Log could be presented is shown below.
+
+![Screen Shot](/sample_app_screen_shot.png)
+  
 All database commands can be found in the [db.js](https://github.com/callerid/electronjs_sampleApp/blob/master/db.js) file located in project root.
 
 ### CallerID.com Lookup Table
