@@ -99,4 +99,4 @@ One feature omitted from the example is the Popups feature. This feature would b
 
 Also, when using popups, one could add a button to the popup window which pulls up the client record and displays it for the user in the Client Information window. This makes it easy on the user: the call comes in and displays the Caller ID popup, with custom names, and the user only has to click the 'Lookup' button on the popup to see all the client's info. This is convenient for the user as they could be working on something else, see the popup and, without opening the full application, get to the clients information.
 
-Other features could be added to the Call Log like: searching for numbers, names, displaying only calls within a date range, or display only inbound or outbound calls.
+Other features could be added to the Call Log like: searching for numbers, names, displaying only calls within a date range, or displaying only inbound or outbound calls.
