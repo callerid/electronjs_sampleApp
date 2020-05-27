@@ -14,6 +14,13 @@ During the VoIP SIP call flow or an analog Caller ID signal on the line, the Cal
   - Off-hook (when Detailed mode is enabled): Call has been answered
   - On-hook (when Detailed mode is enabled): Call has been completed
   - End Record: Provides Caller ID information along with duration of call
+ 
+Using the detailed features above, this Sample App can present the full call sequence visually: 
+ - Change Line row to pink for Ringing and start blinking the Phone icon
+ - Change line row to green for an Inbound call or blue for an Outbound call (using Start record)
+ - Stop blinking Phone icon when Off-hook is seen (call has been answered)
+ - Return to idle colors on On-hook
+ - On the End Record, get the duration of the call
 
 ### CallerID.com format parsing of received data
 [Example of CallerID.com's Data Format](http://callerid.com/support/data-format-basic/)
