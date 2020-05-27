@@ -43,7 +43,7 @@ When detailed mode is enabled on Deluxe and Vertex hardware, the Sample App pres
 
 [Example of CallerID.com's Data Format](http://callerid.com/support/data-format-basic/)
 
-Parsing the incoming data is easiest when using regular expressions. Below is an example how to do this, along with a needed function to convert the incoming data from bytes to a simple ASCII string (allowing one to use regular expressions).
+Parsing the incoming data is done using regular expressions. A function is used to convert the incoming data from bytes to a simple ASCII string to allow for regular expression parsing. Refer to the example code below.
 
 ```
 function parse(data_from_message_event)
