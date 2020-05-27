@@ -18,19 +18,28 @@ The ‘bind’ function attempts to bind to UDP port 3520 and listen for data by
 You must be bound to UDP port 3520 to capture call records from CallerID.com hardware. Call Records arriving from CallerID.com hardware are captured with the .on(‘message’) event.
 
 ### CallerID.com format parsing of received data
-  #### Caller ID Output Sequence
-  - Ring (when Detailed mode is enabled): Beginning of the sequence
-  - Start Record: Provides Caller ID information
-  - Off-hook (when Detailed mode is enabled): Call has been answered
-  - On-hook (when Detailed mode is enabled): Call has been completed
-  - End Record: Provides Caller ID information along with duration of call
+#### Inbound Call Record Sequence
+  - **Ring** - (Detailed mode enabled on Deluxe or Vertex units)
+  - **Start of Call** - Line Number, Caller ID Time & Date, Number, and Name
+  - **Off-hook** - Call answered (Detailed mode enabled)
+  - **On-hook** - Call completed (Detailed mode enabled)
+  - **End of Call** -  All “Start of Call” information plus duration of call
  
-Using the detailed features above, this Sample App can present the full call sequence visually: 
- - Change Line row to pink for Ringing and start blinking the Phone icon
- - Change line row to green for an Inbound call or blue for an Outbound call (using Start record)
- - Stop blinking Phone icon when Off-hook is seen (call has been answered)
- - Return to idle colors on On-hook
- - On the End Record, get the duration of the call
+#### Outbound Call Record Sequence (Whozz Calling? Deluxe and Vertex units)
+
+  - **Off-hook** - (Detailed mode enabled)  
+  - **Start of Call** - Line Number, Time & Date, and number dialed
+  - **On-hook** - Call completed (Detailed mode enabled)
+  - **End of Call** -  All “Start of Call” information plus duration of call
+
+#### Sample Application Presentation
+When detailed mode is enabled on Deluxe and Vertex hardware, the Sample App presents the full call sequence visually: 
+
+   - **Ring:** changes appropriate row to pink and starts blinking the Phone icon
+   - **Start of Call:** changes row to green for an inbound call or blue for an outbound call 
+   - **Off-hook:** Stop blinking Phone icon for inbound call (call has been answered)
+   - **On-hook:** return row to idle color
+   - **End of Call:** populate the duration of the call in call log
 
 [Example of CallerID.com's Data Format](http://callerid.com/support/data-format-basic/)
 
