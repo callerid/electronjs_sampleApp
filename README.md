@@ -15,7 +15,7 @@ The ‘bind’ function attempts to bind to UDP port 3520 and listen for data by
   
 [Click Here to view Bind Function](https://github.com/callerid/electronjs_sampleApp/blob/de0b25adf82e17dfd14de50511bd98cd33ad6b21/base.js#L33)
 
-You must be bound to UDP port 3520 to capture call records from CallerID.com hardware. Call Records arriving from CallerID.com hardware are captured within the .on(‘message’).
+You must be bound to UDP port 3520 to capture call records from CallerID.com hardware. Call Records arriving from CallerID.com hardware are captured with the .on(‘message’) event.
 
 ### CallerID.com format parsing of received data
   #### Caller ID Output Sequence
