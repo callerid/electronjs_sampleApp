@@ -17,6 +17,7 @@ The ‘bind’ function attempts to bind to UDP port 3520 and listen for data by
 
 You must be bound to UDP port 3520 to capture call records from CallerID.com hardware. Call Records arriving from CallerID.com hardware are captured within the .on(‘message’).
 
+### CallerID.com format parsing of received data
   #### Caller ID Output Sequence
   - Ring (when Detailed mode is enabled): Beginning of the sequence
   - Start Record: Provides Caller ID information
@@ -31,7 +32,6 @@ Using the detailed features above, this Sample App can present the full call seq
  - Return to idle colors on On-hook
  - On the End Record, get the duration of the call
 
-### CallerID.com format parsing of received data
 [Example of CallerID.com's Data Format](http://callerid.com/support/data-format-basic/)
 
 Parsing the incoming data is easiest when using regular expressions. Below is an example how to do this, along with a needed function to convert the incoming data from bytes to a simple ASCII string (allowing one to use regular expressions).
