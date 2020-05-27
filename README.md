@@ -77,7 +77,7 @@ Logging a call into a SQLite database (named, in this case, 'database.db3') take
   
 An example of how the Call Log could be presented is shown below.
 
-![Screen Shot](/sample_app_screen_shot.png)
+![Screen Shot](/call_log_screen_shot.png)
   
 All database commands can be found in the [db.js](https://github.com/callerid/electronjs_sampleApp/blob/master/db.js) file located in project root.
 
