@@ -7,7 +7,16 @@ The executable emulates the look and feel of the Example Application shown on th
 
 ## Core Concepts
 ### UDP Reception
-During the VoIP SIP call flow or an analog Caller ID signal on the line, the CallerID.com Vertex or Whozz Calling unit, respectively, will generate the same Call Record sequence which is picked up in the on('message') event located in the 'bind' function [here](https://github.com/callerid/electronjs_sampleApp/blob/de0b25adf82e17dfd14de50511bd98cd33ad6b21/base.js#L33). It is important to remember you must be bound to UDP port 3520 to pick up the CallerID.com hardware's ethernet output during a call cycle. The entire 'bind' function, linked above, shows how to do this.
+The ‘bind’ function attempts to bind to UDP port 3520 and listen for data by setting three events:
+
+  - .on(‘error’) - An error was thrown
+  - .on(‘listening’) - Bound correctly and is now listening to incoming UDP packets
+  - .on(‘message’) - UDP packet has been received
+  
+[Click Here to view Bind Function](https://github.com/callerid/electronjs_sampleApp/blob/de0b25adf82e17dfd14de50511bd98cd33ad6b21/base.js#L33)
+
+You must be bound to UDP port 3520 to capture call records from CallerID.com hardware. Call Records arriving from CallerID.com hardware are captured within the .on(‘message’).
+
   #### Caller ID Output Sequence
   - Ring (when Detailed mode is enabled): Beginning of the sequence
   - Start Record: Provides Caller ID information
