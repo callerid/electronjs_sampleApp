@@ -18,7 +18,6 @@ body {
   letter-spacing: 1.5px;
   vertical-align: middle;
   display: inline-flex;
-  width: 100%;
   height: 80px;
   margin-top: 5px;
   margin-bottom: 5px;
@@ -320,6 +319,40 @@ table::-webkit-scrollbar-thumb {
   background-color: #c5d2da;
   border-radius: 20px;
   border: 3px solid #454e53;
+}
+
+.add_link_view {
+  width: 100%;
+}
+
+.add_link_row {
+  width: 96%;
+  background-image: linear-gradient(#5C6B73, #424d53);
+  border-radius: 10px;
+  height: 80px;
+  color: #e7f3f5;
+  letter-spacing: 1.5px;
+  vertical-align: middle;
+  height: 40px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding-left: 20px;
+  padding-top: 20px;
+  padding-bottom: 15px;
+  text-align: center;
+}
+
+.add_link_row td {
+  padding-left: 4px;
+}
+
+.add_link_btn {
+  width: 80px;
+  background-image: linear-gradient(#d1e8f5, #c0d4df);
+  border-radius: 2px;
+  cursor: pointer;
+  text-align: center;
+  float: right;
 }
 
 /*# sourceMappingURL=main.css.map */

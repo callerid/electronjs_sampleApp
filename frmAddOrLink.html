@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- CallerID.com 2020 -->
+    <title>CallerID.com Add New Client or Link Existing</title>
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <link rel="stylesheet" type="text/css" href="./plugins/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="./plugins/jquery-ui.structure.min.css">
+    <link rel="stylesheet" type="text/css" href="./plugins/jquery-ui.theme.min.css">
+
+    <!-- Include jQuery -->
+    <script>
+        window.$ = window.jQuery = require("jquery");
+    </script>
+    <script src="./plugins/jquery-ui.js"></script>
+    <!-------------------->
+    <!-- Database Code -------->
+    <script src="./db.js" type="text/javascript"></script>
+    <!-------------------->
+    <script>
+
+        var this_lookup_number = "";
+        function insert_lookup_number(lookup_number)
+        {
+            
+            $("#lbCreateText").text(lookup_number);
+            $("#lbLinkText").text(lookup_number);
+
+            this_lookup_number = lookup_number;
+        }
+
+        $(document).ready(function() {
+
+            client_eventEmitter.on('all_clients_loaded', (allClients) => {
+
+                $( "#inClients" ).autocomplete({
+                    source: allClients
+                });
+
+            });
+
+            get_all_clients();
+
+            $("#btnCreateClient").on("click", () => {
+
+                var company_name = $("#tbCompanyName").val();
+
+                if(company_name === "")
+                {
+                    alert("Company Name is empty.");
+                    return;
+                }
+
+                alert("creating: " + company_name + " with: " + this_lookup_number);
+
+            });
+
+            $("#btnLinkClient").on("click", () => {
+
+                alert("linking: " + this_lookup_number);
+
+            });
+
+        });
+
+    </script>
+    </head>
+
+    <body>
+
+        <table class="add_link_view">
+
+            <tr>
+                <td>
+
+                    <div class="add_link_row">
+                        
+                        <center>
+                            <table>
+                                <tr>
+                                    <td>
+                                        Create a company named: 
+                                    </td>
+                                    <td>
+                                        <div class="ui-widget">
+                                            <input id="tbCompanyName"></input>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        using <b><span id="lbCreateText">000-000-0000</span></b>
+                                    </td>
+                                    <td>
+                                        <button id="btnCreateClient" class="add_link_btn">Create Client</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </center>
+                    </div>
+
+                    <div class="add_link_row">
+                        <center>
+                            <table style="padding:0px;margin:0px;">
+                                <tr>
+                                    <td>Link&nbsp;<b><span id="lbLinkText">000-000-0000</span></b>&nbsp;to this Client: </td>
+                                    <td>
+    
+                                        <div class="ui-widget">
+                                            <input id="inClients">
+                                        </div>
+    
+                                    </td>
+                                    <td style="width: 20%;">
+                                        <button id="btnLinkClient" class="add_link_btn">Link</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </center>                        
+                    </div>                    
+                </td>
+            </tr>
+
+        </table>
+
+    </body>
+
+</html>

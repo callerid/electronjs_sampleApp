@@ -31,32 +31,36 @@
         $("#imgRolodex1").on('click', () => {
 
           var lookup_number = $("#lbCallerIDNumber1").text();
+          //if(lookup_number == "No Calls") return; UNCOMMENT THIS
 
-          open_rolodex_window(lookup_number);
+          open_client_window(lookup_number);
 
         });
 
         $("#imgRolodex2").on('click', () => {
 
           var lookup_number = $("#lbCallerIDNumber2").text();
+          if(lookup_number == "No Calls") return;
 
-          open_rolodex_window(lookup_number);
+          open_client_window(lookup_number);
 
         });
 
         $("#imgRolodex3").on('click', () => {
 
           var lookup_number = $("#lbCallerIDNumber3").text();
+          if(lookup_number == "No Calls") return;
 
-          open_rolodex_window(lookup_number);
+          open_client_window(lookup_number);
 
         });
 
         $("#imgRolodex4").on('click', () => {
 
           var lookup_number = $("#lbCallerIDNumber4").text();
+          if(lookup_number == "No Calls") return;
 
-          open_rolodex_window(lookup_number);
+          open_client_window(lookup_number);
 
         });
 
@@ -82,7 +86,7 @@
                     <div class="app_call_info" style="padding-top:15px;"><img id="imgLine1" src="tele.png" width="70" height="50"></span></div>
                     <div class="app_call_info_text_line"><span id="lbLine1">Ln 1</span></div>
                     <div class="app_call_info_text_time"><span id="lbTime1">No<br/>Calls</span></div>
-                    <div id="lbSectionNumber1" class="app_call_info_text_callerid_number"><span id="lbCallerIDNumber1">No Calls</span></div>
+                    <div id="lbSectionNumber1" class="app_call_info_text_callerid_number"><span id="lbCallerIDNumber1">770-263-7112</span></div>
                     <div id="lbSectionName1" class="app_call_info_text_callerid_name"><span id="lbCallerIDName1">No Calls</span></div>
                     <div class="app_call_info" style="padding-top:15px;padding-right:10px;"><img id="imgRolodex1" src="rolodex.png" width="70" height="50"></span></div>
 

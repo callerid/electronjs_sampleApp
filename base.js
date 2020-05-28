@@ -357,41 +357,6 @@ function open_call_log_window()
 
 }
 
-var win_rolodex;
-function open_rolodex_window(lookup_number)
-{
-
-    if(lookup_number.length < 1) return;
-
-    const electron = require('electron');
-    const BrowserWindow = electron.remote.BrowserWindow;
-
-    if(win_rolodex != null)
-    {
-        win_rolodex.close();
-    }
-
-    win_rolodex = new BrowserWindow({
-        width: 800,
-        height: 450,
-        webPreferences: {
-            nodeIntegration: true
-        }
-    });
-
-    win_rolodex.on("close", () => {
-        win_call_log = null;
-    });
-
-    // and load the index.html of the app.
-    win_rolodex.loadFile('frmRolodex.html');
-    win_rolodex.removeMenu();
-    
-    // Uncomment below for JS debugging
-    //win_rolodex.webContents.openDevTools();
-
-}
-
 // ----------------------------------------------------------------
 // Needed functions
 function array_to_ascii(array)

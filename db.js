@@ -4,6 +4,11 @@ const events = require('events');
 var eventEmitter = new events.EventEmitter();
 var call_log_entries = [];
 
+var lookup_eventEmitter = new events.EventEmitter();
+
+var client_eventEmitter = new events.EventEmitter();
+var all_clients = [];
+
 // --------------------------------------------------------------
 // Database creation/closure
 // --------------------------------------------------------------
@@ -73,7 +78,7 @@ function insert_call(ln, io, se, dur, cs, rings, date, time, number, name)
     close_database();
 }
 
-function get_full_call_log(eventHandler)
+function get_full_call_log()
 {
     open_database();
     
@@ -115,6 +120,78 @@ function get_full_call_log(eventHandler)
 }
 
 // --------------------------------------------------------------
+// Lookup Table
+// --------------------------------------------------------------
+function create_lookup_table()
+{
+    open_database();
+
+    database.run("CREATE TABLE IF NOT EXISTS lookups (id INTEGER PRIMARY KEY NOT NULL, " + 
+    "client_record_id INTEGER(10), lookup_number CHAR(20));",[], (err) =>{
+
+        if(err) return console.error("SQL (create table) ERROR " + err.message);
+
+        console.log("Created lookup table in SQLite database.");
+
+    });
+
+    close_database();
+
+}
+
+function insert_lookup(record_id, lookup_number)
+{
+    open_database();
+
+    database.run("INSERT INTO lookups (client_record_id, lookup_number) VALUES (?, " +
+    "?);", [record_id, lookup_number], (err) => {
+
+        if(err) return console.error("SQL (insertion) ERROR " + err.message);
+
+        console.log("Inserted " + lookup_number + " into lookups table.");
+
+    });
+
+    close_database();
+}
+
+function lookup(lookup_number)
+{
+    open_database();
+    
+    database.all("SELECT * FROM lookups WHERE lookup_number = ?;", [lookup_number], (err, rows) => {
+        
+        if (err) {
+          throw err;
+        }
+
+        console.log("Retrieving Record ID from lookups...");
+
+        if(rows.length < 1) {
+            console.log("No lookups.");
+            lookup_eventEmitter.emit('lookup_failed', lookup_number);
+            return null;
+        }
+        
+        console.log("Lookup number found; returning...");
+        
+        var record_id = Object.values(rows[0]);
+
+        if(record_id.length < 1) 
+        {
+            lookup_eventEmitter.emit('lookup_failed', lookup_number);
+            return null;
+        }
+
+        record_id = record_id[1];
+        lookup_eventEmitter.emit('lookup_found', [record_id]);
+
+    });
+
+    close_database();
+}
+
+// --------------------------------------------------------------
 // Clients Database
 // --------------------------------------------------------------
 function create_client_table()
@@ -149,6 +226,48 @@ function insert_client(company_name, lookup_number, callerid_name)
     close_database();
 }
 
+function get_all_clients()
+{
+    open_database();
+    
+    database.all("SELECT * FROM clients;", [], (err, rows) => {
+        
+        if (err) {
+          throw err;
+        }
+
+        console.log("Retrieving Full Client table...");
+
+        if(rows.length < 1) {
+            console.log("Client table empty.");
+            return null;
+        }
+        
+        console.log("Client table found and populated; returning...");
+        
+        all_clients = [];
+        for(var i = 0; i < rows.length; i++)
+        {
+            all_clients.push(rows[i]);
+        }
+
+        var temp = [];
+
+        for(var i = 0; i < all_clients.length; i++)
+        {
+            var cols = Object.values(all_clients[i]);
+            temp.push(cols[3]);
+        }
+
+        all_clients = temp;
+
+        client_eventEmitter.emit('all_clients_loaded', all_clients);
+
+    });
+
+    close_database();
+}
+
 function get_client_from_number(lookup_number)
 {
     open_database();
@@ -176,3 +295,81 @@ function get_client_from_number(lookup_number)
 
 create_log_table();
 create_client_table();
+create_lookup_table();
+
+// Windows
+var win_client_info;
+var win_add_or_link;
+function open_client_window(lookup_number)
+{
+
+    if(lookup_number.length < 1) return;
+
+    lookup_eventEmitter.on('lookup_found', function(log_entries){
+
+        const electron = require('electron');
+        const BrowserWindow = electron.remote.BrowserWindow;
+
+        if(win_client_info != null)
+        {
+            win_client_info.close();
+        }
+
+        win_client_info = new BrowserWindow({
+            width: 800,
+            height: 450,
+            webPreferences: {
+                nodeIntegration: true
+            }
+        });
+
+        win_client_info.on("close", () => {
+            win_client_info = null;
+        });
+
+        // and load the index.html of the app.
+        win_client_info.loadFile('frmClientInfo.html');
+        win_client_info.removeMenu();
+        
+        // Uncomment below for JS debugging
+        //win_client_info.webContents.openDevTools();
+
+    });
+
+    lookup_eventEmitter.on('lookup_failed', function(lookup_number){
+
+        const electron = require('electron');
+        const BrowserWindow = electron.remote.BrowserWindow;
+
+        if(win_add_or_link != null)
+        {
+            win_add_or_link.close();
+        }
+
+        win_add_or_link = new BrowserWindow({
+            width: 800,
+            height: 235,
+            webPreferences: {
+                nodeIntegration: true
+            }
+        });
+
+        win_add_or_link.on("close", () => {
+            win_add_or_link = null;
+        });
+
+        // and load the index.html of the app.
+        win_add_or_link.loadFile('frmAddOrLink.html');
+        win_add_or_link.removeMenu();
+        
+        // Uncomment below for JS debugging
+        win_add_or_link.webContents.openDevTools();
+
+        // Add lookup number to new window
+        win_add_or_link.webContents.executeJavaScript("insert_lookup_number('" + lookup_number + "')");
+
+    });
+
+    lookup(lookup_number);
+
+}

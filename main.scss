@@ -35,7 +35,6 @@ body
     letter-spacing: 1.5px;
     vertical-align: middle;
     display:inline-flex;
-    width: 100%;
     height: 80px;
     margin-top: 5px;
     margin-bottom: 5px;
@@ -365,4 +364,42 @@ table::-webkit-scrollbar-thumb
     background-color: rgb(197, 210, 218);
     border-radius: 20px;
     border: 3px solid rgb(69, 78, 83);
+}
+
+.add_link_view
+{
+    width: 100%;
+}
+
+.add_link_row
+{
+    width: 96%;
+    background-image: linear-gradient(#5C6B73, rgb(66, 77, 83));
+    border-radius: 10px;
+    height: 80px;
+    color: rgb(231, 243, 245);
+    letter-spacing: 1.5px;
+    vertical-align: middle;
+    height: 40px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding-left: 20px;
+    padding-top: 20px;
+    padding-bottom: 15px;
+    text-align: center;
+}
+
+.add_link_row td
+{
+    padding-left: 4px;
+}
+
+.add_link_btn
+{
+    width: 80px;
+    background-image: linear-gradient(rgb(209, 232, 245), rgb(192, 212, 223));
+    border-radius: 2px;
+    cursor: pointer;
+    text-align: center;
+    float: right;
 }
