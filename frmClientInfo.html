@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- CallerID.com 2020 -->
+    <title>CallerID.com Add New Client or Link Existing</title>
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <link rel="stylesheet" type="text/css" href="./plugins/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="./plugins/jquery-ui.structure.min.css">
+    <link rel="stylesheet" type="text/css" href="./plugins/jquery-ui.theme.min.css">
+
+    <!-- Include jQuery -->
+    <script>
+        window.$ = window.jQuery = require("jquery");
+    </script>
+    <script src="./plugins/jquery-ui.js"></script>
+    <!-------------------->
+    <!-- Database Code -------->
+    <script src="./db.js" type="text/javascript"></script>
+    <!-------------------->
+    <script>
+
+        var this_client_record_id = "";
+
+        function set_client_record_id(client_record_id)
+        {
+            this_client_record_id = client_record_id;
+
+            get_all_lookups_for_client_record_id(this_client_record_id);
+            get_company_name_from_client_record_id(this_client_record_id);
+            get_callerid_number_from_client_record_id(this_client_record_id);
+            get_callerid_name_from_client_record_id(this_client_record_id);
+
+        }
+
+        function populate_lookups(lookups)
+        {
+
+            var template = `<tr>    
+                                <td class='client_info_lookup_row'>
+                                    [lookup_number]
+                                </td>
+                            
+                                <td>
+                                    <input class="client_info_lookup_unlink_btn" 
+                                        type="button" id="btn[lookup_number]" 
+                                        value="Unlink"></input>
+                                </td>
+                            </tr>`;
+            
+            var lookup_string = "";
+            for(var i = 0; i < lookups.length; i++)
+            {
+                lookup_string += template.replace("[lookup_number]", lookups[i]);
+            }
+
+            lookup_string = "<table class='client_lookup_entries'>" + 
+                lookup_string + "</table>";
+
+            $("#lookup_rows").html(lookup_string);
+
+        }
+
+        $(document).ready(function() {
+
+            lookup_eventEmitter.on("all_lookup_load", (lookups) => {
+
+                populate_lookups(lookups);
+
+            });
+
+            client_eventEmitter.on('company_name_loaded', (company_name) => {
+
+                $("#tbCompanyName").val(company_name);
+
+            });
+
+            client_eventEmitter.on('client_callerid_number_loaded', (caller_id_number) => {
+
+                $("#lbCallerIDNumber").text(caller_id_number);
+
+            });
+
+            client_eventEmitter.on('client_callerid_name_loaded', (caller_id_name) => {
+
+                $("#lbCallerIDName").text(caller_id_name);
+
+            });
+
+        });
+
+    </script>
+    </head>
+
+    <body>
+
+        <div class="app_view">
+
+            <div class="client_info_row" style="margin-left:0px; width:100%;">
+                
+                <center>
+                    <table>
+                        <tr>
+                            <td>
+                                Company Name: <input type="text" id="tbCompanyName" value=""></input>
+                            </td>
+                            <td>
+                                <input style="margin-left:8px;" value="Save" type="button" id="btnSaveCompanyName"></input>
+                            </td>
+                        </tr>
+                    </table>
+                </center>
+                
+            </div>
+
+            <table style="width: 100%;">
+
+                <tr>
+
+                    <td class="client_info_fields">
+
+                        <div class="client_info_row_thin">
+                            Caller ID Information: <span id="lbCallerIDNumber"></span> - <span id="lbCallerIDName"></span>
+                        </div>
+
+                        <table style="margin-top: 30px;">
+
+                            <tr>
+                                <td>
+                                    <div class="client_info_row" style="width: 150px;">
+                                        <div>First Name</div>
+                                        <div class="client_info_field"><input style="width:120px;" type="text"></input></div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="client_info_row" style="width: 150px;">
+                                        <div>Last Name</div>
+                                        <div class="client_info_field"><input style="width:120px;" type="text"></input></div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="client_info_row" style="width: 195px;">
+                                        <div>Email</div>
+                                        <div class="client_info_field"><input style="width:165px;" type="text"></input></div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </table>
+
+                        <table>
+
+                            <tr>
+                                <td>
+                                    <div class="client_info_row" style="width: 235px;">
+                                        <div>Address</div>
+                                        <div class="client_info_field"><input style="width:205px;" type="text"></input></div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="client_info_row" style="width: 120px;">
+                                        <div>City</div>
+                                        <div class="client_info_field"><input style="width:90px;" type="text"></input></div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="client_info_row" style="width: 60px;">
+                                        <div>State</div>
+                                        <div class="client_info_field"><input style="width:30px;" type="text"></input></div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="client_info_row" style="width: 75px;">
+                                        <div>Zip</div>
+                                        <div class="client_info_field"><input style="width:50px;" type="text"></input></div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </table>
+
+                    </td>
+
+                    <td style="float: right;">
+                        
+                        <div class="client_info_row_header">Linked Lookup Numbers</div>
+                        <div id="lookup_rows">
+
+                            <!-- Lookup Entries -->
+                
+                        </div>
+
+                    </td>
+
+                </tr>
+
+            </table>
+
+        </div>
+
+    </body>
+
+</html>

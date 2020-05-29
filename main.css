@@ -355,4 +355,93 @@ table::-webkit-scrollbar-thumb {
   float: right;
 }
 
+.client_info_row {
+  width: 97%;
+  background-image: linear-gradient(#5C6B73, #424d53);
+  border-radius: 10px;
+  height: 90px;
+  color: #e7f3f5;
+  letter-spacing: 1.5px;
+  vertical-align: middle;
+  height: 40px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-align: center;
+}
+
+.client_info_row_thin {
+  width: 97%;
+  background-image: linear-gradient(#5C6B73, #424d53);
+  border-radius: 10px;
+  height: 40px;
+  color: #e7f3f5;
+  letter-spacing: 1.5px;
+  vertical-align: middle;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding-top: 20px;
+  text-align: center;
+}
+
+.client_info_row_header {
+  width: 97%;
+  background-image: linear-gradient(#5C6B73, #424d53);
+  border-radius: 10px;
+  height: 80px;
+  color: #e7f3f5;
+  letter-spacing: 1.5px;
+  vertical-align: middle;
+  height: 20px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding-top: 20px;
+  padding-bottom: 15px;
+  text-align: center;
+}
+
+.client_info_lookup_row {
+  width: 90%;
+  background-image: linear-gradient(#aac4d3, #889ba7);
+  border-radius: 10px;
+  height: 30px;
+  color: #e7f3f5;
+  letter-spacing: 1.5px;
+  vertical-align: middle;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  text-align: center;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.client_lookup_entries {
+  width: 100%;
+  height: 246px;
+  display: block;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  scrollbar-base-color: #424d53;
+}
+
+.client_info_lookup_unlink_btn {
+  width: 80px;
+  height: 30px;
+  background-image: linear-gradient(#d1e8f5, #c0d4df);
+  border-radius: 2px;
+  cursor: pointer;
+  text-align: center;
+  float: right;
+}
+
+.client_info_fields {
+  vertical-align: top;
+}
+
+.client_info_field {
+  margin-top: 8px;
+  margin-bottom: 14px;
+}
+
 /*# sourceMappingURL=main.css.map */

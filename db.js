@@ -5,6 +5,7 @@ var eventEmitter = new events.EventEmitter();
 var call_log_entries = [];
 
 var lookup_eventEmitter = new events.EventEmitter();
+var all_lookups = [];
 
 var client_eventEmitter = new events.EventEmitter();
 var all_clients = [];
@@ -191,6 +192,48 @@ function lookup(lookup_number)
     close_database();
 }
 
+function get_all_lookups_for_client_record_id(client_record_id)
+{
+    open_database();
+    
+    database.all("SELECT * FROM lookups WHERE client_record_id = ?;", [client_record_id], (err, rows) => {
+        
+        if (err) {
+          throw err;
+        }
+
+        console.log("Retrieving all lookups...");
+
+        if(rows.length < 1) {
+            console.log("No Lookups.");
+            return null;
+        }
+        
+        console.log("Lookups found and populated; returning...");
+        
+        all_lookups = [];
+        for(var i = 0; i < rows.length; i++)
+        {
+            all_lookups.push(rows[i]);
+        }
+
+        var temp = [];
+
+        for(var i = 0; i < all_lookups.length; i++)
+        {
+            var cols = Object.values(all_lookups[i]);
+            temp.push(cols[2]);
+        }
+
+        all_lookups = temp;
+
+        lookup_eventEmitter.emit('all_lookup_load', all_lookups);
+
+    });
+
+    close_database();
+}
+
 // --------------------------------------------------------------
 // Clients Database
 // --------------------------------------------------------------
@@ -256,7 +299,7 @@ function get_all_clients()
         for(var i = 0; i < all_clients.length; i++)
         {
             var cols = Object.values(all_clients[i]);
-            temp.push(cols[3]);
+            temp.push(cols[2]);
         }
 
         all_clients = temp;
@@ -268,11 +311,11 @@ function get_all_clients()
     close_database();
 }
 
-function get_client_from_number(lookup_number)
+function get_company_name_from_client_record_id(client_record_id)
 {
     open_database();
 
-    database.all("SELECT * FROM clients WHERE lookup_number = ?;", [lookup_number], (err, rows) => {
+    database.all("SELECT * FROM clients WHERE id = ?;", [client_record_id], (err, rows) => {
         
         if (err) {
           throw err;
@@ -281,12 +324,68 @@ function get_client_from_number(lookup_number)
         console.log("Retrieving Data...");
 
         if(rows.length < 1) {
-            console.log(lookup_number + " NOT found in clients database.");
+            console.log(client_record_id + " - ID NOT found in clients database.");
             return null;
         }
         
-        console.log("Data retrieved for : " + lookup_number);
-        return rows[0];
+        console.log("Data retrieved for client ID: " + client_record_id);
+        var company_name = Object.values(rows[0])[2];
+
+        client_eventEmitter.emit('company_name_loaded', company_name);
+
+      });
+
+      close_database();
+}
+
+function get_callerid_number_from_client_record_id(client_record_id)
+{
+    open_database();
+
+    database.all("SELECT * FROM clients WHERE id = ?;", [client_record_id], (err, rows) => {
+        
+        if (err) {
+          throw err;
+        }
+
+        console.log("Retrieving Data...");
+
+        if(rows.length < 1) {
+            console.log(client_record_id + " - ID NOT found in clients database.");
+            return null;
+        }
+        
+        console.log("Data retrieved for client ID: " + client_record_id);
+        var number = Object.values(rows[0])[1];
+
+        client_eventEmitter.emit('client_callerid_number_loaded', number);
+
+      });
+
+      close_database();
+}
+
+function get_callerid_name_from_client_record_id(client_record_id)
+{
+    open_database();
+
+    database.all("SELECT * FROM clients WHERE id = ?;", [client_record_id], (err, rows) => {
+        
+        if (err) {
+          throw err;
+        }
+
+        console.log("Retrieving Data...");
+
+        if(rows.length < 1) {
+            console.log(client_record_id + " - ID NOT found in clients database.");
+            return null;
+        }
+        
+        console.log("Data retrieved for client ID: " + client_record_id);
+        var name = Object.values(rows[0])[3];
+
+        client_eventEmitter.emit('client_callerid_name_loaded', name);
 
       });
 
@@ -305,7 +404,7 @@ function open_client_window(lookup_number)
 
     if(lookup_number.length < 1) return;
 
-    lookup_eventEmitter.on('lookup_found', function(log_entries){
+    lookup_eventEmitter.on('lookup_found', function(client_record_id){
 
         const electron = require('electron');
         const BrowserWindow = electron.remote.BrowserWindow;
@@ -317,7 +416,7 @@ function open_client_window(lookup_number)
 
         win_client_info = new BrowserWindow({
             width: 800,
-            height: 450,
+            height: 465,
             webPreferences: {
                 nodeIntegration: true
             }
@@ -333,6 +432,9 @@ function open_client_window(lookup_number)
         
         // Uncomment below for JS debugging
         //win_client_info.webContents.openDevTools();
+
+        // Send record ID to other window
+        win_client_info.webContents.executeJavaScript("set_client_record_id(1)");
 
     });
 
@@ -363,7 +465,7 @@ function open_client_window(lookup_number)
         win_add_or_link.removeMenu();
         
         // Uncomment below for JS debugging
-        win_add_or_link.webContents.openDevTools();
+        //win_add_or_link.webContents.openDevTools();
 
         // Add lookup number to new window
         win_add_or_link.webContents.executeJavaScript("insert_lookup_number('" + lookup_number + "')");
