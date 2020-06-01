@@ -70,6 +70,8 @@ function bind()
 
 function check_for_call_record(message)
 {
+    var update_log = false;
+
     // Detailed call record
     if(message.length == 52 || message.length == 53)
     {
@@ -117,7 +119,7 @@ function check_for_call_record(message)
 
         time = hrs + ":" + time.substr(time.indexOf(":") + 1) + " " + am_pm;
 
-        var line = parseInt(ln) - 1;
+        var line = parseInt(ln);
 
         switch(type)
         {
@@ -141,6 +143,8 @@ function check_for_call_record(message)
         }
 
         insert_call(line, type, " ", "    ", " ", "  ", date, time, "              ", "               ");
+
+        update_log = true;
 
     }
     
@@ -185,7 +189,7 @@ function check_for_call_record(message)
         var num = groups[9].padEnd(14, "&nbsp;");
         var name = groups[10].padEnd(15, "&nbsp;");
         
-        var line = parseInt(ln) - 1;
+        var line = parseInt(ln);
 
         if(se == "S")
         {
@@ -198,16 +202,26 @@ function check_for_call_record(message)
 
         insert_call(line, io, se, dur, cs, rings, date, time, num, name);
 
+        update_log = true;
+
+    }
+
+    if(update_log)
+    {
+        if(win_call_log != null)
+        {
+            win_call_log.webContents.executeJavaScript("update_call_log()");
+        }
     }
 }
-
-// Run Main
-bind();
 
 // ----------------------------------------------------------------
 // Display functions
 function call_ring(line, datetime)
 {
+    // Offset for array
+    line = line - 1;
+
     // Ring image
     var str_updater = outputs[line][o_img_line];
     $("#" + str_updater).removeClass();
@@ -225,6 +239,9 @@ function call_ring(line, datetime)
 
 function call_off_hook(line, datetime)
 {
+    // Offset for array
+    line = line - 1;
+
     // Stop blinking line image
     var str_updater = outputs[line][o_img_line];
     $("#" + str_updater).removeClass();
@@ -236,6 +253,9 @@ function call_off_hook(line, datetime)
 
 function call_on_hook(line, datetime)
 {
+    // Offset for array
+    line = line - 1;
+
     // Stop blinking line image
     var str_updater = outputs[line][o_img_line];
 
@@ -246,6 +266,9 @@ function call_on_hook(line, datetime)
 
 function call_start(line, datetime, number, name, io)
 {
+    // Offset for array
+    line = line - 1;
+
     // Keep ring image same
     // ---
 
@@ -288,6 +311,9 @@ function call_start(line, datetime, number, name, io)
 
 function call_end(line, datetime, number, name)
 {
+    // Offset for array
+    line = line - 1;
+
     // Keep ring image same
     // ---
 
@@ -353,7 +379,7 @@ function open_call_log_window()
     win_call_log.removeMenu();
     
     // Uncomment below for JS debugging
-    //win_call_log.webContents.openDevTools();
+    win_call_log.webContents.openDevTools();
 
 }
 

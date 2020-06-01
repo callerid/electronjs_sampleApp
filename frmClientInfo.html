@@ -42,8 +42,8 @@
                             
                                 <td>
                                     <input class="client_info_lookup_unlink_btn" 
-                                        type="button" id="btn[lookup_number]" 
-                                        value="Unlink"></input>
+                                        type="button" id="btn[btn_id]" 
+                                        value="Unlink" onclick="btnLookupUnlink_Click('[btn_click_id]')""></input>
                                 </td>
                             </tr>`;
             
@@ -51,6 +51,8 @@
             for(var i = 0; i < lookups.length; i++)
             {
                 lookup_string += template.replace("[lookup_number]", lookups[i]);
+                lookup_string = lookup_string.replace("[btn_id]", lookups[i]);
+                lookup_string = lookup_string.replace("[btn_click_id]", lookups[i]);
             }
 
             lookup_string = "<table class='client_lookup_entries'>" + 
@@ -60,9 +62,22 @@
 
         }
 
+        function btnLookupUnlink_Click(lookup_number)
+        {
+            // Remove link
+            remove_lookup(this_client_record_id, lookup_number);
+            
+        }
+
         $(document).ready(function() {
 
             lookup_eventEmitter.on("all_lookup_load", (lookups) => {
+
+                populate_lookups(lookups);
+
+            });
+
+            lookup_eventEmitter.on("update_lookups", (lookups) => {
 
                 populate_lookups(lookups);
 

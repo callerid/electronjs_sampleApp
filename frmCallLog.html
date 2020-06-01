@@ -19,6 +19,12 @@
     <!-------------------->
     <script>
 
+        function update_call_log()
+        {
+            // Give time for App to log call in call log table before refreshing
+            setTimeout(get_full_call_log, 500);
+        }
+
         $(document).ready(function() {
 
             eventEmitter.on('call_log_load', function(log_entries){
@@ -61,7 +67,7 @@
                         }
                     }
                     
-                    new_entry = new_entry.replace("[line]", log_entries[i][1]);
+                    new_entry = new_entry.replace("[line]", log_entries[i][1].padStart(2, '0'));
                     new_entry = new_entry.replace("[io]", log_entries[i][2]);
                     new_entry = new_entry.replace("[se]", log_entries[i][3]);
                     new_entry = new_entry.replace("[dur]", log_entries[i][4]);

@@ -83,7 +83,7 @@ function get_full_call_log()
 {
     open_database();
     
-    database.all("SELECT * FROM call_log;", [], (err, rows) => {
+    database.all("SELECT * FROM call_log ORDER BY id DESC;", [], (err, rows) => {
         
         if (err) {
           throw err;
@@ -150,6 +150,24 @@ function insert_lookup(record_id, lookup_number)
         if(err) return console.error("SQL (insertion) ERROR " + err.message);
 
         console.log("Inserted " + lookup_number + " into lookups table.");
+
+    });
+
+    close_database();
+}
+
+function remove_lookup(record_id, lookup_number)
+{
+    open_database();
+
+    database.run("DELETE FROM lookups WHERE client_record_id = ? AND lookup_number = ?;)",
+                    [record_id, lookup_number], (err) => {
+
+        if(err) return console.error("SQL (deletion) ERROR " + err.message);
+
+        console.log("Deleted " + lookup_number + " from lookups table.");
+
+        get_all_lookups_for_client_record_id(record_id);
 
     });
 
@@ -406,6 +424,8 @@ function open_client_window(lookup_number)
 
     lookup_eventEmitter.on('lookup_found', function(client_record_id){
 
+        if(client_record_id.length < 1) return;
+
         const electron = require('electron');
         const BrowserWindow = electron.remote.BrowserWindow;
 
@@ -434,7 +454,8 @@ function open_client_window(lookup_number)
         //win_client_info.webContents.openDevTools();
 
         // Send record ID to other window
-        win_client_info.webContents.executeJavaScript("set_client_record_id(1)");
+        var id = client_record_id[0];
+        win_client_info.webContents.executeJavaScript("set_client_record_id('" + id + "')");
 
     });
 
