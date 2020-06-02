@@ -259,7 +259,8 @@ function create_client_table()
 {
     open_database();
 
-    database.run("CREATE TABLE IF NOT EXISTS clients (id INTEGER PRIMARY KEY NOT NULL, lookup_number CHAR(20), company_name CHAR(200), callerid_name CHAR(200));",[], (err) =>{
+    database.run("CREATE TABLE IF NOT EXISTS clients (id INTEGER PRIMARY KEY NOT NULL, lookup_number CHAR(20), company_name CHAR(200), " +
+    "callerid_name CHAR(200), address CHAR(100), city CHAR(80), state CHAR(2), zip CHAR(20), email CHAR(140), first_name CHAR(100), last_name CHAR(100));",[], (err) =>{
 
         if(err) return console.error("SQL (create table) ERROR " + err.message);
 
@@ -271,12 +272,12 @@ function create_client_table()
 
 }
 
-function insert_client(company_name, lookup_number, callerid_name)
+function insert_client(company_name, lookup_number, callerid_name, address, city, state, zip, email, first_name, last_name)
 {
     open_database();
 
-    database.run("INSERT INTO clients (lookup_number, company_name, callerid_name) VALUES (?, " +
-    "?,?);", [lookup_number, company_name, callerid_name], (err) => {
+    database.run("INSERT INTO clients (lookup_number, company_name, callerid_name, address, city, state, zip, email, first_name, last_name) VALUES (?, " +
+    "?,?,?,?,?,?,?,?,?);", [lookup_number, company_name, callerid_name, address, city, state, zip, email, first_name, last_name], (err) => {
 
         if(err) return console.error("SQL (insertion) ERROR " + err.message);
 
@@ -331,6 +332,8 @@ function get_all_clients()
 
 function get_company_name_from_client_record_id(client_record_id)
 {
+    // Example of getting one field from database
+
     open_database();
 
     database.all("SELECT * FROM clients WHERE id = ?;", [client_record_id], (err, rows) => {
@@ -358,6 +361,8 @@ function get_company_name_from_client_record_id(client_record_id)
 
 function get_callerid_number_from_client_record_id(client_record_id)
 {
+    // Example of getting one field from database
+
     open_database();
 
     database.all("SELECT * FROM clients WHERE id = ?;", [client_record_id], (err, rows) => {
@@ -385,6 +390,8 @@ function get_callerid_number_from_client_record_id(client_record_id)
 
 function get_callerid_name_from_client_record_id(client_record_id)
 {
+    // Example of getting one field from database
+
     open_database();
 
     database.all("SELECT * FROM clients WHERE id = ?;", [client_record_id], (err, rows) => {
@@ -404,6 +411,88 @@ function get_callerid_name_from_client_record_id(client_record_id)
         var name = Object.values(rows[0])[3];
 
         client_eventEmitter.emit('client_callerid_name_loaded', name);
+
+      });
+
+      close_database();
+}
+
+function get_address_from_client_record_id(client_record_id)
+{
+    // Example of getting multiple fields from database
+
+    open_database();
+
+    database.all("SELECT * FROM clients WHERE id = ?;", [client_record_id], (err, rows) => {
+        
+        if (err) {
+          throw err;
+        }
+
+        console.log("Retrieving Data...");
+
+        if(rows.length < 1) {
+            console.log(client_record_id + " - ID NOT found in clients database.");
+            return null;
+        }
+        
+        console.log("Data retrieved for client ID: " + client_record_id);
+        
+        var address = Object.values(rows[0])[4];
+        var city = Object.values(rows[0])[5];
+        var state = Object.values(rows[0])[6];
+        var zip = Object.values(rows[0])[7];
+        var email = Object.values(rows[0])[8];
+
+        var data = {
+
+            'address' : address,
+            'city' : city,
+            'state' : state,
+            'zip' : zip,
+            'email' : email
+
+        };
+
+        client_eventEmitter.emit('client_address_loaded', data);
+
+      });
+
+      close_database();
+}
+
+function get_contact_from_client_record_id(client_record_id)
+{
+    // Example of getting multiple fields from database
+
+    open_database();
+
+    database.all("SELECT * FROM clients WHERE id = ?;", [client_record_id], (err, rows) => {
+        
+        if (err) {
+          throw err;
+        }
+
+        console.log("Retrieving Data...");
+
+        if(rows.length < 1) {
+            console.log(client_record_id + " - ID NOT found in clients database.");
+            return null;
+        }
+        
+        console.log("Data retrieved for client ID: " + client_record_id);
+        
+        var first_name = Object.values(rows[0])[9];
+        var last_name = Object.values(rows[0])[10];
+
+        var data = {
+
+            'first_name' : first_name,
+            'last_name' : last_name
+
+        };
+
+        client_eventEmitter.emit('client_contact_loaded', data);
 
       });
 

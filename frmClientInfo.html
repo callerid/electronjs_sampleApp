@@ -25,10 +25,18 @@
         {
             this_client_record_id = client_record_id;
 
+            // Example of getting multiple items from database that are
+            // formatted already
             get_all_lookups_for_client_record_id(this_client_record_id);
+
+            // Example of getting one field at a time
             get_company_name_from_client_record_id(this_client_record_id);
             get_callerid_number_from_client_record_id(this_client_record_id);
             get_callerid_name_from_client_record_id(this_client_record_id);
+
+            // (Preferred method for multiple fields) - Get multiple fields as object
+            get_address_from_client_record_id(this_client_record_id);
+            get_contact_from_client_record_id(this_client_record_id);
 
         }
 
@@ -101,6 +109,23 @@
 
             });
 
+            client_eventEmitter.on('client_address_loaded', (address_data) => {
+
+                $("#tbEmail").val(address_data['email']);
+                $("#tbAddress").val(address_data['address']);
+                $("#tbCity").val(address_data['city']);
+                $("#tbState").val(address_data['state']);
+                $("#tbZip").val(address_data['zip']);
+
+            });
+
+            client_eventEmitter.on('client_contact_loaded', (address_data) => {
+
+                $("#tbFirstName").val(address_data['first_name']);
+                $("#tbLastName").val(address_data['last_name']);
+
+            });
+
         });
 
     </script>
@@ -110,16 +135,13 @@
 
         <div class="app_view">
 
-            <div class="client_info_row" style="margin-left:0px; width:100%;">
+            <div class="client_info_row" style="margin-left:0px; width:100%;padding-bottom:10px;">
                 
                 <center>
                     <table>
                         <tr>
                             <td>
                                 Company Name: <input type="text" id="tbCompanyName" value=""></input>
-                            </td>
-                            <td>
-                                <input style="margin-left:8px;" value="Save" type="button" id="btnSaveCompanyName"></input>
                             </td>
                         </tr>
                     </table>
@@ -143,19 +165,19 @@
                                 <td>
                                     <div class="client_info_row" style="width: 150px;">
                                         <div>First Name</div>
-                                        <div class="client_info_field"><input style="width:120px;" type="text"></input></div>
+                                        <div class="client_info_field"><input id="tbFirstName" style="width:120px;" type="text"></input></div>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="client_info_row" style="width: 150px;">
                                         <div>Last Name</div>
-                                        <div class="client_info_field"><input style="width:120px;" type="text"></input></div>
+                                        <div class="client_info_field"><input id="tbLastName" style="width:120px;" type="text"></input></div>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="client_info_row" style="width: 195px;">
                                         <div>Email</div>
-                                        <div class="client_info_field"><input style="width:165px;" type="text"></input></div>
+                                        <div class="client_info_field"><input id="tbEmail" style="width:165px;" type="text"></input></div>
                                     </div>
                                 </td>
                             </tr>
@@ -168,25 +190,25 @@
                                 <td>
                                     <div class="client_info_row" style="width: 235px;">
                                         <div>Address</div>
-                                        <div class="client_info_field"><input style="width:205px;" type="text"></input></div>
+                                        <div class="client_info_field"><input id="tbAddress" style="width:205px;" type="text"></input></div>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="client_info_row" style="width: 120px;">
                                         <div>City</div>
-                                        <div class="client_info_field"><input style="width:90px;" type="text"></input></div>
+                                        <div class="client_info_field"><input id="tbCity" style="width:90px;" type="text"></input></div>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="client_info_row" style="width: 60px;">
                                         <div>State</div>
-                                        <div class="client_info_field"><input style="width:30px;" type="text"></input></div>
+                                        <div class="client_info_field"><input id="tbState" style="width:30px;" type="text"></input></div>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="client_info_row" style="width: 75px;">
                                         <div>Zip</div>
-                                        <div class="client_info_field"><input style="width:50px;" type="text"></input></div>
+                                        <div class="client_info_field"><input id="tbZip" style="width:50px;" type="text"></input></div>
                                     </div>
                                 </td>
                             </tr>
