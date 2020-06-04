@@ -1,5 +1,7 @@
 const sqlite3 = require('sqlite3').verbose();
 const events = require('events');
+const electron = require('electron');
+const BrowserWindow = electron.remote.BrowserWindow;
 
 var eventEmitter = new events.EventEmitter();
 var call_log_entries = [];
@@ -526,81 +528,76 @@ var win_client_info;
 var win_add_or_link;
 function open_client_window(lookup_number)
 {
-
     if(lookup_number.length < 1) return;
-
-    lookup_eventEmitter.on('lookup_found', function(client_record_id){
-
-        if(client_record_id.length < 1) return;
-
-        const electron = require('electron');
-        const BrowserWindow = electron.remote.BrowserWindow;
-
-        if(win_client_info != null)
-        {
-            win_client_info.close();
-        }
-
-        win_client_info = new BrowserWindow({
-            width: 800,
-            height: 441,
-            frame: false,
-            webPreferences: {
-                nodeIntegration: true
-            }
-        });
-
-        win_client_info.on("close", () => {
-            win_client_info = null;
-        });
-
-        // and load the index.html of the app.
-        win_client_info.loadFile('frmClientInfo.html');
-        win_client_info.removeMenu();
-        
-        // Uncomment below for JS debugging
-        //win_client_info.webContents.openDevTools();
-
-        // Send record ID to other window
-        var id = client_record_id[0];
-        win_client_info.webContents.executeJavaScript("set_client_record_id('" + id + "')");
-
-    });
-
-    lookup_eventEmitter.on('lookup_failed', function(lookup_number){
-
-        const electron = require('electron');
-        const BrowserWindow = electron.remote.BrowserWindow;
-
-        if(win_add_or_link != null)
-        {
-            win_add_or_link.close();
-        }
-
-        win_add_or_link = new BrowserWindow({
-            width: 800,
-            height: 235,
-            webPreferences: {
-                nodeIntegration: true
-            }
-        });
-
-        win_add_or_link.on("close", () => {
-            win_add_or_link = null;
-        });
-
-        // and load the index.html of the app.
-        win_add_or_link.loadFile('frmAddOrLink.html');
-        win_add_or_link.removeMenu();
-        
-        // Uncomment below for JS debugging
-        //win_add_or_link.webContents.openDevTools();
-
-        // Add lookup number to new window
-        win_add_or_link.webContents.executeJavaScript("insert_lookup_number('" + lookup_number + "')");
-
-    });
-
     lookup(lookup_number);
-
 }
+
+// Client Lookup Events
+lookup_eventEmitter.on('lookup_found', function(client_record_id){
+
+    if(client_record_id.length < 1) return;        
+
+    if(win_client_info != null)
+    {
+        win_client_info.close();
+    }
+
+    win_client_info = new BrowserWindow({
+        width: 800,
+        height: 441,
+        frame: false,
+        webPreferences: {
+            nodeIntegration: true
+        }
+    });
+
+    win_client_info.on("close", () => {
+        win_client_info = null;
+    });
+
+    // and load the index.html of the app.
+    win_client_info.loadFile('frmClientInfo.html');
+    win_client_info.removeMenu();
+    
+    // Uncomment below for JS debugging
+    //win_client_info.webContents.openDevTools();
+
+    // Send record ID to other window
+    var id = client_record_id[0];
+    win_client_info.webContents.executeJavaScript("set_client_record_id('" + id + "')");
+
+});
+
+lookup_eventEmitter.on('lookup_failed', function(lookup_number){
+
+    const electron = require('electron');
+    const BrowserWindow = electron.remote.BrowserWindow;
+
+    if(win_add_or_link != null)
+    {
+        win_add_or_link.close();
+    }
+
+    win_add_or_link = new BrowserWindow({
+        width: 800,
+        height: 235,
+        webPreferences: {
+            nodeIntegration: true
+        }
+    });
+
+    win_add_or_link.on("close", () => {
+        win_add_or_link = null;
+    });
+
+    // and load the index.html of the app.
+    win_add_or_link.loadFile('frmAddOrLink.html');
+    win_add_or_link.removeMenu();
+    
+    // Uncomment below for JS debugging
+    //win_add_or_link.webContents.openDevTools();
+
+    // Add lookup number to new window
+    win_add_or_link.webContents.executeJavaScript("insert_lookup_number('" + lookup_number + "')");
+
+});

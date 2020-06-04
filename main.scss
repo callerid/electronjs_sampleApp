@@ -408,7 +408,6 @@ table::-webkit-scrollbar-thumb
 {
     width: 97%;
     background-image: linear-gradient(#5C6B73, rgb(66, 77, 83));
-    border-radius: 10px;
     height: 90px;
     color: rgb(231, 243, 245);
     letter-spacing: 1.5px;
@@ -423,9 +422,8 @@ table::-webkit-scrollbar-thumb
 
 .client_info_row_thin
 {
-    width: 97%;
+    width: 92%;
     background-image: linear-gradient(#5C6B73, rgb(66, 77, 83));
-    border-radius: 10px;
     height: 40px;
     color: rgb(231, 243, 245);
     letter-spacing: 1.5px;
@@ -440,7 +438,6 @@ table::-webkit-scrollbar-thumb
 {
     width: 97%;
     background-image: linear-gradient(#5C6B73, rgb(66, 77, 83));
-    border-radius: 10px;
     height: 80px;
     color: rgb(231, 243, 245);
     letter-spacing: 1.5px;
@@ -457,7 +454,6 @@ table::-webkit-scrollbar-thumb
 {
     width: 90%;
     background-image: linear-gradient(rgb(170, 196, 211), rgb(136, 155, 167));
-    border-radius: 10px;
     height: 30px;
     color: rgb(231, 243, 245);
     letter-spacing: 1.5px;
@@ -495,7 +491,8 @@ table::-webkit-scrollbar-thumb
     vertical-align: top;
 }
 
-.client_info_field{
+.client_info_field
+{
     margin-top: 8px;
     margin-bottom: 14px;
 }

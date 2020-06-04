@@ -11,6 +11,7 @@
     <!-- Include jQuery -->
     <script>
         window.$ = window.jQuery = require("jquery");
+        const remote = require('electron').remote;
     </script>
     <script src="./plugins/jquery-ui.js"></script>
     <!-------------------->
@@ -174,7 +175,10 @@
 
             $("#btnCloseWindow").on('click', () => {
                 save_data();
-                close();
+                
+                var this_window = remote.getCurrentWindow();
+                this_window.close();
+
             });
 
         });
@@ -182,7 +186,7 @@
     </script>
     </head>
 
-    <body style="margin: 0px; border: 3px solid rgb(92, 107, 115)">
+    <body style="margin: 0px; border: 3px solid rgb(92, 107, 115);">
 
         <div class="app_view">
             <div class="client_info_window_header">
@@ -219,11 +223,11 @@
 
                     <td class="client_info_fields">
 
-                        <div class="client_info_row_thin">
+                        <div class="client_info_row_thin" style="margin-left:15px;">
                             Caller ID Information: <span id="lbCallerIDNumber"></span> - <span id="lbCallerIDName"></span>
                         </div>
 
-                        <table style="margin-top: 30px;">
+                        <table style="margin-top: 30px; padding-left: 12px;">
 
                             <tr>
                                 <td>
@@ -248,7 +252,7 @@
 
                         </table>
 
-                        <table>
+                        <table style="padding-left: 12px;">
 
                             <tr>
                                 <td>
