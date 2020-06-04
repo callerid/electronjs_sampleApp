@@ -73,7 +73,24 @@
         function btnLookupUnlink_Click(lookup_number)
         {
             // Remove link
-            remove_lookup(this_client_record_id, lookup_number);
+            remove_lookup(this_client_record_id, lookup_number);            
+        }
+
+        function save_data()
+        {
+            var client_record_id = this_client_record_id;
+            var company_name = $("#tbCompanyName").val();
+            var lookup_number = $("#lbCallerIDNumber").text();
+            var callerid_name = $("#lbCallerIDName").text();
+            var address = $("#tbAddress").val();
+            var city = $("#tbCity").val();
+            var state = $("#tbState").val();
+            var zip = $("#tbZip").val();
+            var first_name = $("#tbFirstName").val();
+            var last_name = $("#tbLastName").val();
+            var email = $("#tbEmail").val();
+            
+            update_client(client_record_id, company_name, lookup_number, callerid_name, address, city, state, zip, email, first_name, last_name);
             
         }
 
@@ -126,15 +143,62 @@
 
             });
 
+            // Save data triggers
+            $("#tbCompanyName").on('focusout', (e) => {
+                save_data();
+            });
+
+            $("#tbCity").on('focusout', (e) => {
+                save_data();
+            });
+
+            $("#tbState").on('focusout', (e) => {
+                save_data();
+            });
+
+            $("#tbZip").on('focusout', (e) => {
+                save_data();
+            });
+
+            $("#tbFirstName").on('focusout', (e) => {
+                save_data();
+            });
+
+            $("#tbLastName").on('focusout', (e) => {
+                save_data();
+            });
+
+            $("#tbEmail").on('focusout', (e) => {
+                save_data();
+            });
+
+            $("#btnCloseWindow").on('click', () => {
+                save_data();
+                close();
+            });
+
         });
 
     </script>
     </head>
 
-    <body>
+    <body style="margin: 0px; border: 3px solid rgb(92, 107, 115)">
 
         <div class="app_view">
+            <div class="client_info_window_header">
+                
+                <table>
+                    <tr>
+                        <td>
+                            Client Information
+                        </td>
+                        <td>
+                            <div style="margin-left: 620px;"><input id="btnCloseWindow" type="button" value="X" class="client_close_btn"></div>
+                        </td>
+                    </tr>
+                </table>
 
+            </div>
             <div class="client_info_row" style="margin-left:0px; width:100%;padding-bottom:10px;">
                 
                 <center>

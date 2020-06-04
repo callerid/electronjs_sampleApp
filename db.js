@@ -288,6 +288,24 @@ function insert_client(company_name, lookup_number, callerid_name, address, city
     close_database();
 }
 
+function update_client(client_record_id, company_name, lookup_number, callerid_name, address, city, state, zip, email, first_name, last_name)
+{
+    open_database();
+
+    database.run("UPDATE clients SET lookup_number = ?, company_name = ?, callerid_name = ?, address = ?," +
+                " city = ?, state = ?, zip = ?, email = ?, first_name = ?, last_name = ? WHERE id = ?;", 
+                [lookup_number, company_name, callerid_name, address, city, state, 
+                zip, email, first_name, last_name, client_record_id], (err) => {
+
+        if(err) return console.error("SQL (update) ERROR " + err.message);
+
+        console.log("Updated " + company_name + " in clients table.");
+
+    });
+
+    close_database();
+}
+
 function get_all_clients()
 {
     open_database();
@@ -525,7 +543,8 @@ function open_client_window(lookup_number)
 
         win_client_info = new BrowserWindow({
             width: 800,
-            height: 465,
+            height: 441,
+            frame: false,
             webPreferences: {
                 nodeIntegration: true
             }

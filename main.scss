@@ -499,3 +499,24 @@ table::-webkit-scrollbar-thumb
     margin-top: 8px;
     margin-bottom: 14px;
 }
+
+.client_info_window_header
+{
+    width: 99.3%;
+    background-color: white;
+    padding-left: 5px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-top: 3px;
+    margin: 0px;
+    height: 35px;
+    -webkit-app-region: drag;
+}
+
+.client_close_btn
+{
+    background-color: rgb(215, 226, 226);
+    color: rgb(49, 52, 53);
+    -webkit-app-region: no-drag;
+    cursor: pointer;
+}
