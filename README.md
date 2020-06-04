@@ -7,6 +7,8 @@ The executable emulates the look and feel of the Example Application shown on th
 
 ## Core Concepts
 ### UDP Reception
+You must be bound to UDP port 3520 to capture call records from CallerID.com hardware. Call Records arriving from CallerID.com hardware are captured with the .on(‘message’) event shown below.
+
 The ‘bind’ function attempts to bind to UDP port 3520 and listen for data by setting three events:
 
   - .on(‘error’) - An error was thrown
@@ -15,17 +17,18 @@ The ‘bind’ function attempts to bind to UDP port 3520 and listen for data by
   
 [Click Here to view Bind Function](https://github.com/callerid/electronjs_sampleApp/blob/de0b25adf82e17dfd14de50511bd98cd33ad6b21/base.js#L33)
 
-You must be bound to UDP port 3520 to capture call records from CallerID.com hardware. Call Records arriving from CallerID.com hardware are captured with the .on(‘message’) event.
-
 ### CallerID.com format parsing of received data
-#### Inbound Call Record Sequence
+#### Caller ID Output Sequence
+The code allows for all possible call records that can be generated from Whozz Calling? Deluxe units and Vertex units with Detailed mode set on.  Whozz Calling? Basic units only send Inbound Start Records.
+
+  ##### Inbound Call Record Sequence
   - **Ring** - (Detailed mode enabled on Deluxe or Vertex units)
   - **Start of Call** - Line Number, Caller ID Time & Date, Number, and Name
   - **Off-hook** - Call answered (Detailed mode enabled)
   - **On-hook** - Call completed (Detailed mode enabled)
   - **End of Call** -  All “Start of Call” information plus duration of call
  
-#### Outbound Call Record Sequence (Whozz Calling? Deluxe and Vertex units)
+  ##### Outbound Call Record Sequence (Whozz Calling? Deluxe and Vertex units)
 
   - **Off-hook** - (Detailed mode enabled)  
   - **Start of Call** - Line Number, Time & Date, and number dialed
