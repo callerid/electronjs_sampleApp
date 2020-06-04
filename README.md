@@ -91,21 +91,22 @@ An example of a Call Log layout is shown below.
 All database commands can be found in the [db.js](https://github.com/callerid/electronjs_sampleApp/blob/master/db.js) file located in project root.
 
 ### CallerID.com Lookup Table
-When linking/using Caller ID numbers to lookup a record it is best to use a separate SQLite table solely for lookups. This lookup table should contain a link/reference to a client record ID and the associated Caller ID number. This method is preferred as it allows you to store multiple Caller ID numbers for a single client which is important for clients that have more than one number they can call from.
+When using Caller ID numbers to lookup a record, it is best practice to incorporate a separate SQLite table. Only two fields are required in this lookup table: the Caller ID number and the associated client record ID.  This method allows you to store unlimited Caller ID numbers for a single client without having to add all lookup numbers to the actual customer record.
 
-In this Sample Application, the Rolodex icon, turns pink when a call comes in that has no entry in the lookups table for the current Caller ID number. When clicking the pink Rolodex, a new window appears which allows you to either create a new client or link to a previous client. Creating a new link inserts a row into the lookup table containing the client record ID and the Caller ID number (lookup number) and creating a new client creates an empty client in a separate table called the clients table. The record ID for the client just created is this used to add the link in the lookup's table.
+In the Sample Application, the Rolodex icon turns pink when the Caller ID number does not match an entry in the lookup table. Clicking the pink icon launches a window allowing the user to either create a new customer record, or link to an existing customer. 
 
-When a call comes in that has already been linked, the Rolodex icon turns green and when clicked, simply pulls up the record linked to the Caller ID number. To do this lookup there are three steps:
-  1. Check lookups database for Caller ID number and get the client record ID.
-  2. Use the client record ID to pull up the client's information
-  3. Present the information in the frmClientInfo.html window.
+If linking, a new entry is added to the lookup table with the 10 digit Caller ID number and the record ID.  When creating a new customer, an empty record is added to the “client” table.  The clients table is used to store all information needed, such as Contact Name, Company Name, Contact Email, etc. (This information is pulled when displaying the frmClientInfo.html window). The record ID and phone number for the customer just created is then added to the lookup table.
+
+When a call arrives with a Caller ID number previously linked to a customer record ID, the Rolodex icon turns green.  Clicking the icon simply pulls up the customer record based on the record ID.
+
+  #### Notes on Caller ID lookup table linking
+  - Links in the Lookup table must be unique. Before adding a linking entry row, search the table for an existing occurrence of the Caller ID number.
+  - In cases of erroneous links or outdated matches, a mechanism must be incorporated to “unlink” the Caller ID number with the customer ID and “re-link” to the correct customer ID.  This is as easy as removing the incorrect table row and adding a new row. 
   
 ### Clients Database Table
 The clients table is used to store any and all information you desire, example: Contact Name, Contact Email, Company Name, etc. This information is pulled when displaying the frmClientInfo.html window.
 
 ## Extending the Sample Application
-One feature omitted from the example is the Popups feature. This feature would be to popup a new window when a call comes in and display it top-most on the screen, pulling the Company name or Contact name and displaying it with the Caller ID number instead of the Caller ID name. This allows you to rename something like "WIRELESS CALLER" to "John Smith" or "CallerID.com". This simplifies the presentation of Caller ID info.
-
-Also, when using popups, one could add a button to the popup window which pulls up the client record and displays it for the user in the Client Information window. This makes it easy on the user: the call comes in and displays the Caller ID popup, with custom names, and the user only has to click the 'Lookup' button on the popup to see all the client's info. This is convenient for the user as they could be working on something else, see the popup and, without opening the full application, get to the clients information.
+If a match on the Caller ID number is found in the lookup table, an easily added feature would substitute the Company name (or Customer Name, if no company)  for the Caller ID name. This would help users identify frequent customers quicker, and perhaps, a customer calling back immediately.
 
 Other features could be added to the Call Log like: searching for numbers, names, displaying only calls within a date range, or displaying only inbound or outbound calls.
