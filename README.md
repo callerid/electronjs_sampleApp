@@ -36,7 +36,7 @@ The code allows for all possible call records that can be generated from Whozz C
   - **End of Call** -  All “Start of Call” information plus duration of call
 
 #### Sample Application Presentation
-When detailed mode is enabled on Deluxe and Vertex hardware, the Sample App presents the full call sequence visually: 
+When detailed mode is enabled on Deluxe and Vertex hardware, the Sample App presents the full call sequence below. If Whozz Calling? Basic units are deployed, only the Start of Call record will be shown.: 
 
    - **Ring:** changes appropriate row to pink and starts blinking the Phone icon
    - **Start of Call:** changes row to green for an inbound call or blue for an outbound call 
@@ -82,12 +82,9 @@ function array_to_ascii(array)
 ```
 
 ### Logging new calls into Call Log database
-Logging a call into a SQLite database (named, in this case, 'database.db3') takes three steps.
-  1. Create Call Log table, if nonexistent
-  2. Parse data into fields
-  3. Insert into SQLite table
+Logging a call into a SQLite database (named 'database.db3') involves creating a Call Log table (if nonexistent), parsing data into fields, and inserting them into the table.
   
-An example of how the Call Log could be presented is shown below.
+An example of a Call Log layout is shown below.
 
 ![Screen Shot](/call_log_screen_shot.png)
   
