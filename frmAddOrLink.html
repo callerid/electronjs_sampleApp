@@ -11,6 +11,7 @@
     <!-- Include jQuery -->
     <script>
         window.$ = window.jQuery = require("jquery");
+        const remote = require('electron').remote;
     </script>
     <script src="./plugins/jquery-ui.js"></script>
     <!-------------------->
@@ -20,13 +21,21 @@
     <script>
 
         var this_lookup_number = "";
-        function insert_lookup_number(lookup_number)
+        var this_callerid_name = "";
+        function insert_lookup_number(lookup_number, caller_id_name)
         {
             
             $("#lbCreateText").text(lookup_number);
             $("#lbLinkText").text(lookup_number);
 
             this_lookup_number = lookup_number;
+            this_callerid_name = caller_id_name;
+        }
+
+        function close_window()
+        {
+            var this_window = remote.getCurrentWindow();
+            this_window.close();
         }
 
         $(document).ready(function() {
@@ -43,22 +52,17 @@
 
             $("#btnCreateClient").on("click", () => {
 
-                var company_name = $("#tbCompanyName").val();
-
-                if(company_name === "")
-                {
-                    alert("Company Name is empty.");
-                    return;
-                }
-
-                alert("creating: " + company_name + " with: " + this_lookup_number);
+                insert_client("Company Name", this_lookup_number, this_callerid_name, "", "", "", "00000", "", "", "");
+                setTimeout(close_window, 1500);
 
             });
 
             $("#btnLinkClient").on("click", () => {
 
-                alert("linking: " + this_lookup_number);
-
+                var company_or_contact_name = $("#inClients").val();
+                get_record_id_from_company_or_contact_name(company_or_contact_name, this_lookup_number);
+                setTimeout(close_window, 1500);
+                
             });
 
         });
@@ -73,23 +77,15 @@
             <tr>
                 <td>
 
-                    <div class="add_link_row">
-                        
+                    <div class="add_link_row_thin">
                         <center>
-                            <table>
+                            <table style="margin-left:15px;padding-left:10px;padding-right:10px;">
                                 <tr>
                                     <td>
-                                        Create a company named: 
-                                    </td>
-                                    <td>
-                                        <div class="ui-widget">
-                                            <input id="tbCompanyName"></input>
-                                        </div>
-                                    </td>
-                                    <td>
+                                        Create New Record<br/>
                                         using <b><span id="lbCreateText">000-000-0000</span></b>
                                     </td>
-                                    <td>
+                                    <td style="padding-left:15px;">
                                         <button id="btnCreateClient" class="add_link_btn">Create Client</button>
                                     </td>
                                 </tr>
@@ -97,27 +93,32 @@
                         </center>
                     </div>
 
-                    <div class="add_link_row">
-                        <center>
-                            <table style="padding:0px;margin:0px;">
-                                <tr>
-                                    <td>Link&nbsp;<b><span id="lbLinkText">000-000-0000</span></b>&nbsp;to this Client: </td>
-                                    <td>
-    
-                                        <div class="ui-widget">
-                                            <input id="inClients">
-                                        </div>
-    
-                                    </td>
-                                    <td style="width: 20%;">
-                                        <button id="btnLinkClient" class="add_link_btn">Link</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="3" style="text-align:center; font-size: smaller;">Begin typing company name of client to see autocompletions.</td>
-                                </tr>
-                            </table>
-                        </center>                        
+                    <div class="add_link_row" style="padding-bottom:36px;">
+                        
+                        <table style="margin-left:15px;padding-left:10px;padding-right:10px;">
+                            <tr>
+                                <td style="width:35%;">
+                                    <center>
+                                        Link<br/>
+                                        <b><span id="lbLinkText">000-000-0000</span></b><br/>
+                                        to Client
+                                    </center>
+                                </td>
+                                <td style="width: 40%;">
+
+                                    <div class="ui-widget">
+                                        <input id="inClients">
+                                    </div>
+
+                                </td>
+                                <td>
+                                    <button id="btnLinkClient" class="add_link_btn">Link</button>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div style="width:100%;margin-top:10px;text-align:center;font-size:smaller;">Type Company or Contact Name (auto-filled)</div>
+                                              
                     </div>                    
                 </td>
             </tr>

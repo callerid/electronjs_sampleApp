@@ -176,7 +176,7 @@ function remove_lookup(record_id, lookup_number)
     close_database();
 }
 
-function lookup(lookup_number)
+function lookup(lookup_number, lookup_name)
 {
     open_database();
     
@@ -190,7 +190,7 @@ function lookup(lookup_number)
 
         if(rows.length < 1) {
             console.log("No lookups.");
-            lookup_eventEmitter.emit('lookup_failed', lookup_number);
+            lookup_eventEmitter.emit('lookup_failed', lookup_number, lookup_name);
             return null;
         }
         
@@ -200,7 +200,7 @@ function lookup(lookup_number)
 
         if(record_id.length < 1) 
         {
-            lookup_eventEmitter.emit('lookup_failed', lookup_number);
+            lookup_eventEmitter.emit('lookup_failed', lookup_number, lookup_name);
             return null;
         }
 
@@ -284,6 +284,26 @@ function insert_client(company_name, lookup_number, callerid_name, address, city
         if(err) return console.error("SQL (insertion) ERROR " + err.message);
 
         console.log("Inserted " + company_name + " into clients table.");
+        console.log("Returning inserted ID.");
+
+        database.all("SELECT * FROM clients ORDER BY id DESC;", [], (err, rows) => {
+        
+            if (err) {
+              throw err;
+            }
+    
+            console.log("Retrieving Data...");
+    
+            if(rows.length < 1) {
+                console.log("Error, inserted row wasn't made.");
+                return null;
+            }
+            
+            var new_record_id = Object.values(rows[0])[0];
+    
+            client_eventEmitter.emit('inserted_new_client', new_record_id, lookup_number);
+    
+          });
 
     });
 
@@ -519,6 +539,66 @@ function get_contact_from_client_record_id(client_record_id)
       close_database();
 }
 
+function get_record_id_from_company_or_contact_name(company_or_contact, lookup_number)
+{
+    // Example of getting multiple fields from database
+
+    open_database();
+
+    database.all("SELECT * FROM clients WHERE company_name = ?;", [company_or_contact], (err, rows) => {
+        
+        if (err) {
+          throw err;
+        }
+
+        console.log("Retrieving Data...");
+
+        if(rows.length < 1) {
+
+            console.log(company_or_contact + " - NOT found in Clients table as Company Name. Trying Contact.");
+
+            // This is not the best way to lookup a record (using the contact name)
+            // because two companies could have the same contact name. You would need
+            // to code for that scenario. For this sample app, we are only coding some
+            // example behavoirs. You should code your app to handle errors like this.
+
+            var first_name = company_or_contact.substring(0, company_or_contact.indexOf(" "));
+            var last_name = company_or_contact.substring(company_or_contact.indexOf(" ") + 1);
+
+            database.all("SELECT * FROM clients WHERE first_name = ? AND last_name = ?;", [first_name, last_name], (err, rows) => {
+        
+                if (err) {
+                  throw err;
+                }
+        
+                console.log("Retrieving Data...");
+        
+                if(rows.length < 1) {
+                    console.log(company_or_contact + " - NOT found in Clients table as Contact Names. Failed.");
+                    alert("Company Name or Contact Name NOT found. Lookup failed.");
+                    return null;
+                }
+                
+                console.log(company_or_contact + " found in Clients table.");
+                
+                var rec_id = Object.values(rows[0])[0];
+                client_eventEmitter.emit('client_record_id_loaded', rec_id, lookup_number);
+        
+              });
+
+            return null;
+        }
+        
+        console.log(company_or_contact + " found in Clients table.");
+        
+        var rec_id = Object.values(rows[0])[0];
+        client_eventEmitter.emit('client_record_id_loaded', rec_id, lookup_number);
+
+      });
+
+      close_database();
+}
+
 create_log_table();
 create_client_table();
 create_lookup_table();
@@ -526,16 +606,16 @@ create_lookup_table();
 // Windows
 var win_client_info;
 var win_add_or_link;
-function open_client_window(lookup_number)
+function open_client_window(lookup_number, lookup_name)
 {
     if(lookup_number.length < 1) return;
-    lookup(lookup_number);
+    lookup(lookup_number, lookup_name);
 }
 
 // Client Lookup Events
 lookup_eventEmitter.on('lookup_found', function(client_record_id){
 
-    if(client_record_id.length < 1) return;        
+    if(client_record_id.length < 1) return;       
 
     if(win_client_info != null)
     {
@@ -568,7 +648,7 @@ lookup_eventEmitter.on('lookup_found', function(client_record_id){
 
 });
 
-lookup_eventEmitter.on('lookup_failed', function(lookup_number){
+lookup_eventEmitter.on('lookup_failed', function(lookup_number, lookup_name){
 
     const electron = require('electron');
     const BrowserWindow = electron.remote.BrowserWindow;
@@ -579,8 +659,8 @@ lookup_eventEmitter.on('lookup_failed', function(lookup_number){
     }
 
     win_add_or_link = new BrowserWindow({
-        width: 800,
-        height: 235,
+        width: 600,
+        height: 280,
         webPreferences: {
             nodeIntegration: true
         }
@@ -595,9 +675,26 @@ lookup_eventEmitter.on('lookup_failed', function(lookup_number){
     win_add_or_link.removeMenu();
     
     // Uncomment below for JS debugging
-    //win_add_or_link.webContents.openDevTools();
+    win_add_or_link.webContents.openDevTools();
 
     // Add lookup number to new window
-    win_add_or_link.webContents.executeJavaScript("insert_lookup_number('" + lookup_number + "')");
+    win_add_or_link.webContents.executeJavaScript("insert_lookup_number('" + lookup_number + "', '" + lookup_name + "')");
+
+});
+
+client_eventEmitter.on('inserted_new_client', function(new_record_id, lookup_number){
+
+    // Create lookup link for this new record
+    insert_lookup(new_record_id, lookup_number);
+    
+    // Use lookup emitter which brings up the new client record
+    lookup_eventEmitter.emit('lookup_found', [new_record_id]);
+
+});
+
+client_eventEmitter.on('client_record_id_loaded', function(record_id, lookup_number){
+
+    // Use client emitter to insert link and popup client windo
+    client_eventEmitter.emit('inserted_new_client', record_id, lookup_number);
 
 });

@@ -366,44 +366,6 @@ table::-webkit-scrollbar-thumb
     border: 3px solid rgb(69, 78, 83);
 }
 
-.add_link_view
-{
-    width: 100%;
-}
-
-.add_link_row
-{
-    width: 96%;
-    background-image: linear-gradient(#5C6B73, rgb(66, 77, 83));
-    border-radius: 10px;
-    height: 80px;
-    color: rgb(231, 243, 245);
-    letter-spacing: 1.5px;
-    vertical-align: middle;
-    height: 40px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    padding-left: 20px;
-    padding-top: 20px;
-    padding-bottom: 15px;
-    text-align: center;
-}
-
-.add_link_row td
-{
-    padding-left: 4px;
-}
-
-.add_link_btn
-{
-    width: 80px;
-    background-image: linear-gradient(rgb(209, 232, 245), rgb(192, 212, 223));
-    border-radius: 2px;
-    cursor: pointer;
-    text-align: center;
-    float: right;
-}
-
 .client_info_row
 {
     width: 97%;
@@ -516,4 +478,48 @@ table::-webkit-scrollbar-thumb
     color: rgb(49, 52, 53);
     -webkit-app-region: no-drag;
     cursor: pointer;
+}
+
+.add_link_view
+{
+    width: 100%;
+}
+
+.add_link_row
+{
+    width: 100%;
+    background-image: linear-gradient(#5C6B73, rgb(66, 77, 83));
+    height: 60px;
+    color: rgb(231, 243, 245);
+    letter-spacing: 1.5px;
+    vertical-align: middle;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding-top: 20px;
+    padding-bottom: 15px;
+}
+
+.add_link_row_thin
+{
+    width: 100%;
+    background-image: linear-gradient(#5C6B73, rgb(66, 77, 83));
+    height: 40px;
+    color: rgb(231, 243, 245);
+    letter-spacing: 1.5px;
+    vertical-align: middle;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding-top: 20px;
+    padding-bottom: 15px;
+}
+
+.add_link_btn
+{
+    width: 80px;
+    height: 40px;
+    background-color: rgb(209, 232, 245);
+    border-radius: 2px;
+    cursor: pointer;
+    text-align: center;
+    float: right;
 }
