@@ -109,18 +109,6 @@
 
             });
 
-            client_eventEmitter.on('company_name_loaded', (company_name) => {
-
-                $("#tbCompanyName").val(company_name);
-
-            });
-
-            client_eventEmitter.on('client_callerid_number_loaded', (caller_id_number) => {
-
-                $("#lbCallerIDNumber").text(caller_id_number);
-
-            });
-
             client_eventEmitter.on('client_callerid_name_loaded', (caller_id_name) => {
 
                 $("#lbCallerIDName").text(caller_id_name);
@@ -203,10 +191,6 @@
                 </table>
 
             </div>
-
-            <div class="client_info_row_thin" style="width:100%;">
-                Caller ID Information: <span id="lbCallerIDNumber"></span> - <span id="lbCallerIDName"></span>
-            </div>
             
             <table style="width: 100%;">
 
@@ -224,7 +208,7 @@
                             </table>                
                         </div>
 
-                        <table style="margin-top: 30px; padding-left: 12px;">
+                        <table style="margin-top: 7px; padding-left: 12px;">
 
                             <tr>
                                 <td>

@@ -61,8 +61,11 @@
 
                 var company_or_contact_name = $("#inClients").val();
                 get_record_id_from_company_or_contact_name(company_or_contact_name, this_lookup_number);
-                setTimeout(close_window, 1500);
                 
+                // Recommened only close if company or contact found
+                // In this sample app, this funcationality is not performed
+                setTimeout(close_window, 1500);
+
             });
 
         });
@@ -79,7 +82,7 @@
 
                     <div class="add_link_row_thin">
                         <center>
-                            <table style="margin-left:15px;padding-left:10px;padding-right:10px;">
+                            <table style="margin-left:5px;padding-left:5px;padding-right:5px;">
                                 <tr>
                                     <td>
                                         Create New Record<br/>
@@ -95,7 +98,7 @@
 
                     <div class="add_link_row" style="padding-bottom:36px;">
                         
-                        <table style="margin-left:15px;padding-left:10px;padding-right:10px;">
+                        <table style="margin-left:5px;padding-left:5px;padding-right:5px;">
                             <tr>
                                 <td style="width:35%;">
                                     <center>

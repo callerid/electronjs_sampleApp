@@ -272,6 +272,9 @@ function call_start(line, datetime, number, name, io)
     // Keep ring image same
     // ---
 
+    // Update Rolodex
+    lookup_number_in_lookup_table(number, line);
+
     // Update panel
     var str_updater = outputs[line][o_pan];
 

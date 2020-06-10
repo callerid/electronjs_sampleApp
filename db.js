@@ -212,6 +212,42 @@ function lookup(lookup_number, lookup_name)
     close_database();
 }
 
+function lookup_number_in_lookup_table(lookup_number, line_number)
+{
+    open_database();
+    
+    database.all("SELECT * FROM lookups WHERE lookup_number = ?;", [lookup_number.trim()], (err, rows) => {
+        
+        if (err) {
+          throw err;
+        }
+
+        console.log("Retrieving Record ID from lookups...");
+
+        if(rows.length < 1) {
+            console.log("No lookups.");
+            lookup_eventEmitter.emit('set_rolodex_pink', line_number);
+            return null;
+        }
+        
+        console.log("Lookup number found; returning...");
+        
+        var record_id = Object.values(rows[0]);
+
+        if(record_id.length < 1) 
+        {
+            lookup_eventEmitter.emit('set_rolodex_pink', line_number);
+            return null;
+        }
+
+        record_id = record_id[1];
+        lookup_eventEmitter.emit('set_rolodex_green', line_number);
+
+    });
+
+    close_database();
+}
+
 function get_all_lookups_for_client_record_id(client_record_id)
 {
     open_database();
@@ -358,7 +394,8 @@ function get_all_clients()
         for(var i = 0; i < all_clients.length; i++)
         {
             var cols = Object.values(all_clients[i]);
-            temp.push(cols[2]);
+            temp.push(cols[2]); // Company Name
+            temp.push(cols[9] + " " + cols[10]);
         }
 
         all_clients = temp;
@@ -613,6 +650,18 @@ function open_client_window(lookup_number, lookup_name)
 }
 
 // Client Lookup Events
+lookup_eventEmitter.on('set_rolodex_pink', (line_number) => {
+
+    $("#imgRolodex" + (parseInt(line_number) + 1).toString()).attr("src", "rolodex_pink.png");
+
+});
+
+lookup_eventEmitter.on('set_rolodex_green', (line_number) => {
+    
+    $("#imgRolodex" + (parseInt(line_number) + 1).toString()).attr("src", "rolodex_green.png");
+
+});
+
 lookup_eventEmitter.on('lookup_found', function(client_record_id){
 
     if(client_record_id.length < 1) return;       
@@ -624,7 +673,7 @@ lookup_eventEmitter.on('lookup_found', function(client_record_id){
 
     win_client_info = new BrowserWindow({
         width: 800,
-        height: 441,
+        height: 335,
         frame: false,
         webPreferences: {
             nodeIntegration: true
@@ -659,7 +708,7 @@ lookup_eventEmitter.on('lookup_failed', function(lookup_number, lookup_name){
     }
 
     win_add_or_link = new BrowserWindow({
-        width: 600,
+        width: 470,
         height: 280,
         webPreferences: {
             nodeIntegration: true
@@ -675,7 +724,7 @@ lookup_eventEmitter.on('lookup_failed', function(lookup_number, lookup_name){
     win_add_or_link.removeMenu();
     
     // Uncomment below for JS debugging
-    win_add_or_link.webContents.openDevTools();
+    //win_add_or_link.webContents.openDevTools();
 
     // Add lookup number to new window
     win_add_or_link.webContents.executeJavaScript("insert_lookup_number('" + lookup_number + "', '" + lookup_name + "')");
