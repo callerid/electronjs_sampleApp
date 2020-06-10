@@ -10,11 +10,11 @@ This Sample application performs the following:
 
   - Receives and parses data arriving from CallerID.com hardware
   - Displays call records with the associated phone line number
-  - Logs call records into a database table
+  - Logs call records into a SQLite databse table called 'call_log'
   - Searches for matching Caller ID phone numbers in a Caller ID Lookup table
-  - If a match is found, indicates this, and allows users to “popup” the customer record
-  - If no match, allows users to match an existing customer record or add a new customer
-  - Allows users to add or delete matches within the Caller ID Lookup table.
+  - If a match is found, an indication is presented which allows users to “popup” the customer record
+  - If no match, an indication is presented which allows users to match an existing customer record or add a new customer
+  - Allows users to delete matches within the Caller ID Lookup table.
 
 The application can handle both Inbound and Outbound Calls call records as well as detailed records that can be sent from **Deluxe** and **Vertex** type units. **Basic** units only send Inbound call records. Use of our **Ethernet Emulator** test tool will allow development without requiring hardware.
 
