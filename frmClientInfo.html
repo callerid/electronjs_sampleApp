@@ -109,6 +109,12 @@
 
             });
 
+            client_eventEmitter.on('company_name_loaded', (company_name) => {
+
+                $("#tbCompanyName").val(company_name);
+
+            });
+
             client_eventEmitter.on('client_callerid_name_loaded', (caller_id_name) => {
 
                 $("#lbCallerIDName").text(caller_id_name);

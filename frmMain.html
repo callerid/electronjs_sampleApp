@@ -35,9 +35,11 @@
 
           var lookup_number = $("#lbCallerIDNumber1").text().trim();
           var lookup_name = $("#lbCallerIDName1").text();
-          if(lookup_number == "No Calls") return;
 
-          open_client_window(lookup_number, lookup_name);
+          if(lookup_number == "No Calls") return;
+          if(!is_phone_number(lookup_number)) return;
+
+          open_client_window(lookup_number, lookup_name, 0);
 
         });
 
@@ -45,9 +47,11 @@
 
           var lookup_number = $("#lbCallerIDNumber2").text().trim();
           var lookup_name = $("#lbCallerIDName2").text();
-          if(lookup_number == "No Calls") return;
 
-          open_client_window(lookup_number, lookup_name);
+          if(lookup_number == "No Calls") return;
+          if(!is_phone_number(lookup_number)) return;
+
+          open_client_window(lookup_number, lookup_name, 1);
 
         });
 
@@ -55,9 +59,11 @@
 
           var lookup_number = $("#lbCallerIDNumber3").text().trim();
           var lookup_name = $("#lbCallerIDName3").text();
-          if(lookup_number == "No Calls") return;
 
-          open_client_window(lookup_number, lookup_name);
+          if(lookup_number == "No Calls") return;
+          if(!is_phone_number(lookup_number)) return;
+
+          open_client_window(lookup_number, lookup_name, 2);
 
         });
 
@@ -65,9 +71,11 @@
 
           var lookup_number = $("#lbCallerIDNumber4").text().trim();
           var lookup_name = $("#lbCallerIDName4").text();
-          if(lookup_number == "No Calls") return;
 
-          open_client_window(lookup_number, lookup_name);
+          if(lookup_number == "No Calls") return;
+          if(!is_phone_number(lookup_number)) return;
+
+          open_client_window(lookup_number, lookup_name, 3);
 
         });
 

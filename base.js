@@ -397,6 +397,12 @@ function array_to_ascii(array)
     return str;
 }
 
+function is_phone_number(in_string)
+{
+    var pattern = /\d{3}\-\d{3}\-\d{4}/;
+    return pattern.test(in_string);
+}
+
 // ----------------------------------------------------------------
 // Some Resources
 // - https://www.sqlitetutorial.net/sqlite-nodejs/

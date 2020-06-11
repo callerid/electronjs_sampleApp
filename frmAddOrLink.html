@@ -22,7 +22,8 @@
 
         var this_lookup_number = "";
         var this_callerid_name = "";
-        function insert_lookup_number(lookup_number, caller_id_name)
+        var this_line_number = "";
+        function insert_lookup_number(lookup_number, caller_id_name, line_number)
         {
             
             $("#lbCreateText").text(lookup_number);
@@ -30,6 +31,7 @@
 
             this_lookup_number = lookup_number;
             this_callerid_name = caller_id_name;
+            this_line_number = line_number;
         }
 
         function close_window()
@@ -52,7 +54,7 @@
 
             $("#btnCreateClient").on("click", () => {
 
-                insert_client("Company Name", this_lookup_number, this_callerid_name, "", "", "", "00000", "", "", "");
+                insert_client("Company Name", this_lookup_number, this_callerid_name, "", "", "", "00000", "", "", "", this_line_number);
                 setTimeout(close_window, 1500);
 
             });
