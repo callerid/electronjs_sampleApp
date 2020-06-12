@@ -387,6 +387,15 @@ table::-webkit-scrollbar-thumb {
   scrollbar-base-color: #424d53;
 }
 
+.client_lookup_entries_empty {
+  width: 228px;
+  height: 220px;
+  display: block;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  scrollbar-base-color: #424d53;
+}
+
 .client_info_lookup_unlink_btn {
   width: 80px;
   height: 30px;

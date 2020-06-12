@@ -196,16 +196,10 @@ function lookup(lookup_number, lookup_name, line_number)
         
         console.log("Lookup number found; returning...");
         
-        var record_id = Object.values(rows[0]);
+        var record_id = Object.values(rows[0])[1];
 
-        if(record_id.length < 1) 
-        {
-            lookup_eventEmitter.emit('lookup_failed', lookup_number, lookup_name, line_number);
-            return null;
-        }
-
-        record_id = record_id[1];
-        lookup_eventEmitter.emit('lookup_found', [record_id]);
+        record_id = record_id;
+        lookup_eventEmitter.emit('lookup_found', record_id, line_number);
 
     });
 
@@ -269,6 +263,7 @@ function get_all_lookups_for_client_record_id(client_record_id)
 
         if(rows.length < 1) {
             console.log("No Lookups.");
+            lookup_eventEmitter.emit('all_lookup_load', []);
             return null;
         }
         
@@ -583,7 +578,7 @@ function get_contact_from_client_record_id(client_record_id)
       close_database();
 }
 
-function get_record_id_from_company_or_contact_name(company_or_contact, lookup_number)
+function get_record_id_from_company_or_contact_name(company_or_contact, lookup_number, line_number)
 {
     // Example of getting multiple fields from database
 
@@ -626,7 +621,7 @@ function get_record_id_from_company_or_contact_name(company_or_contact, lookup_n
                 console.log(company_or_contact + " found in Clients table.");
                 
                 var rec_id = Object.values(rows[0])[0];
-                client_eventEmitter.emit('client_record_id_loaded', rec_id, lookup_number);
+                client_eventEmitter.emit('client_record_id_loaded', rec_id, lookup_number, line_number);
         
               });
 
@@ -636,7 +631,7 @@ function get_record_id_from_company_or_contact_name(company_or_contact, lookup_n
         console.log(company_or_contact + " found in Clients table.");
         
         var rec_id = Object.values(rows[0])[0];
-        client_eventEmitter.emit('client_record_id_loaded', rec_id, lookup_number);
+        client_eventEmitter.emit('client_record_id_loaded', rec_id, lookup_number, line_number);
 
       });
 
@@ -648,8 +643,6 @@ create_client_table();
 create_lookup_table();
 
 // Windows
-var win_client_info;
-var win_add_or_link;
 function open_client_window(lookup_number, lookup_name, line_number)
 {
     if(lookup_number.length < 1) return;
@@ -675,25 +668,23 @@ lookup_eventEmitter.on('set_rolodex_idle', (line_number) => {
 
 });
 
-lookup_eventEmitter.on('lookup_found', function(client_record_id){
+lookup_eventEmitter.on('lookup_found', function(client_record_id, line_number){
 
-    open_client_info(client_record_id);
+    remote.getGlobal("sharedObj").frmMain.webContents.executeJavaScript(`open_client_info(${JSON.stringify(client_record_id)}, ${JSON.stringify(line_number)})`);
 
 });
 
-function open_client_info(client_record_id)
+function open_client_info(client_record_id, line_number)
 {
-    if(client_record_id.length < 1) return;       
-
-    if(win_client_info != null)
+    if(remote.getGlobal("sharedObj").frmClientInfo != null)
     {
         // If window already open then close (wait till close) then re-open
-        win_client_info.close();
-        setTimeout(open_client_info, 200, [client_record_id]);
+        remote.getGlobal("sharedObj").frmClientInfo.close();
+        setTimeout(open_client_info, 200, client_record_id, line_number);
         return;
     }
 
-    win_client_info = new BrowserWindow({
+    remote.getGlobal("sharedObj").frmClientInfo = new BrowserWindow({
         width: 800,
         height: 335,
         frame: false,
@@ -702,38 +693,38 @@ function open_client_info(client_record_id)
         }
     });
 
-    win_client_info.on("close", () => {
-        win_client_info = null;
+    remote.getGlobal("sharedObj").frmClientInfo.on("closed", () => {
+        remote.getGlobal("sharedObj").frmClientInfo = null;
     });
 
     // and load the index.html of the app.
-    win_client_info.loadFile('frmClientInfo.html');
-    win_client_info.removeMenu();
+    remote.getGlobal("sharedObj").frmClientInfo.loadFile('frmClientInfo.html');
+    remote.getGlobal("sharedObj").frmClientInfo.removeMenu();
     
     // Uncomment below for JS debugging
-    //win_client_info.webContents.openDevTools();
+    //remote.getGlobal("sharedObj").frmClientInfo.webContents.openDevTools();
 
     // Send record ID to other window
-    var id = client_record_id[0];
-    win_client_info.webContents.executeJavaScript("set_client_record_id('" + id + "')");
+    var id = client_record_id;
+    remote.getGlobal("sharedObj").frmClientInfo.webContents.executeJavaScript(`insert_vars(${JSON.stringify(id)}, ${JSON.stringify(line_number)})`);
 }
 
 lookup_eventEmitter.on('lookup_failed', function(lookup_number, lookup_name, line_number){
 
-    open_add_link(lookup_number, lookup_name, line_number);
+    remote.getGlobal("sharedObj").frmMain.webContents.executeJavaScript(`open_add_link(${JSON.stringify(lookup_number)}, ${JSON.stringify(lookup_name)}, ${JSON.stringify(line_number)})`);
 
 });
 
 function open_add_link(lookup_number, lookup_name, line_number)
 {
-    if(win_add_or_link != null)
+    if(remote.getGlobal("sharedObj").frmAddLink != null)
     {
-        win_add_or_link.close();
-        setTimeout(open_add_link, 200, [lookup_number, lookup_name, line_number]);
+        remote.getGlobal("sharedObj").frmAddLink.close();
+        setTimeout(open_add_link, 200, lookup_number, lookup_name, line_number);
         return;
     }
 
-    win_add_or_link = new BrowserWindow({
+    remote.getGlobal("sharedObj").frmAddLink = new BrowserWindow({
         width: 470,
         height: 280,
         webPreferences: {
@@ -741,34 +732,35 @@ function open_add_link(lookup_number, lookup_name, line_number)
         }
     });
 
-    win_add_or_link.on("close", () => {
-        win_add_or_link = null;
+    remote.getGlobal("sharedObj").frmAddLink.on("close", () => {
+        var windows = remote.getGlobal("sharedObj");
+        windows.frmAddLink = null;
     });
 
     // and load the index.html of the app.
-    win_add_or_link.loadFile('frmAddOrLink.html');
-    win_add_or_link.removeMenu();
+    remote.getGlobal("sharedObj").frmAddLink.loadFile('frmAddOrLink.html');
+    remote.getGlobal("sharedObj").frmAddLink.removeMenu();
     
     // Uncomment below for JS debugging
-    //win_add_or_link.webContents.openDevTools();
+    //remote.getGlobal("sharedObj").frmAddLink.webContents.openDevTools();
 
     // Add lookup number to new window
-    win_add_or_link.webContents.executeJavaScript(`insert_lookup_number(${JSON.stringify(lookup_number)}, ${JSON.stringify(lookup_name)}, ${JSON.stringify(line_number)})`);
+    remote.getGlobal("sharedObj").frmAddLink.webContents.executeJavaScript(`insert_vars(${JSON.stringify(lookup_number)}, ${JSON.stringify(lookup_name)}, ${JSON.stringify(line_number)})`);
 }
 
-client_eventEmitter.on('inserted_new_client', function(new_record_id, lookup_number){
+client_eventEmitter.on('inserted_new_client', function(new_record_id, lookup_number, line_number){
 
     // Create lookup link for this new record
     insert_lookup(new_record_id, lookup_number);
     
     // Use lookup emitter which brings up the new client record
-    lookup_eventEmitter.emit('lookup_found', [new_record_id]);
+    lookup_eventEmitter.emit('lookup_found', new_record_id, line_number);
 
 });
 
 client_eventEmitter.on('client_record_id_loaded', function(record_id, lookup_number, line_number){
 
-    // Use client emitter to insert link and popup client windo
+    // Use client emitter to insert link and popup client window
     client_eventEmitter.emit('inserted_new_client', record_id, lookup_number, line_number);
 
 });

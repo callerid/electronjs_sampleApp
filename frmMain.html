@@ -23,6 +23,16 @@
     <!-------------------->
     <script>
 
+      function set_rolodex_green(line_number)
+      {
+        $("#imgRolodex" + (parseInt(line_number) + 1).toString()).attr("src", "rolodex_green.png");
+      }
+
+      function set_rolodex_pink(line_number)
+      {
+        $("#imgRolodex" + (parseInt(line_number) + 1).toString()).attr("src", "rolodex_pink.png");
+      }
+
       $(document).ready(function() {
 
         bind();

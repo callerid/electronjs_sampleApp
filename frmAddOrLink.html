@@ -23,7 +23,7 @@
         var this_lookup_number = "";
         var this_callerid_name = "";
         var this_line_number = "";
-        function insert_lookup_number(lookup_number, caller_id_name, line_number)
+        function insert_vars(lookup_number, caller_id_name, line_number)
         {
             
             $("#lbCreateText").text(lookup_number);
@@ -54,7 +54,8 @@
 
             $("#btnCreateClient").on("click", () => {
 
-                insert_client("Company Name", this_lookup_number, this_callerid_name, "", "", "", "00000", "", "", "", this_line_number);
+                insert_client(this_callerid_name, this_lookup_number, this_callerid_name, "", "", "", "00000", "", "", "", this_line_number);
+                remote.getGlobal("sharedObj").frmMain.webContents.executeJavaScript(`set_rolodex_green(${JSON.stringify(this_line_number)})`);
                 setTimeout(close_window, 1500);
 
             });
@@ -62,8 +63,10 @@
             $("#btnLinkClient").on("click", () => {
 
                 var company_or_contact_name = $("#inClients").val();
-                get_record_id_from_company_or_contact_name(company_or_contact_name, this_lookup_number);
+                get_record_id_from_company_or_contact_name(company_or_contact_name, this_lookup_number, this_line_number);
                 
+                remote.getGlobal("sharedObj").frmMain.webContents.executeJavaScript(`set_rolodex_green(${JSON.stringify(this_line_number)})`);
+
                 // Recommened only close if company or contact found
                 // In this sample app, this funcationality is not performed
                 setTimeout(close_window, 1500);

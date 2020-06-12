@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, MenuItem } = require('electron')
+const { app, BrowserWindow, Menu, MenuItem, remote } = require('electron')
 
 function createWindow () {
   // Create the browser window.
@@ -29,6 +29,13 @@ function createWindow () {
 
   // Uncomment below for JS debugging
   //win.webContents.openDevTools();
+
+  // References
+  global.sharedObj = {
+    frmMain: win,
+    frmClientInfo: null,
+    frmAddLink: null
+  };
 
 }
 

@@ -21,10 +21,11 @@
     <script>
 
         var this_client_record_id = "";
-
-        function set_client_record_id(client_record_id)
+        var this_line_number = "";
+        function insert_vars(client_record_id, line_number)
         {
             this_client_record_id = client_record_id;
+            this_line_number = line_number;
 
             // Example of getting multiple items from database that are
             // formatted already
@@ -66,6 +67,16 @@
 
             lookup_string = "<table class='client_lookup_entries'>" + 
                 lookup_string + "</table>";
+
+            if(lookups.length == 0)
+            {
+                lookup_string = `
+                    <table class='client_lookup_entries_empty'">
+                    </table>
+                `;
+
+                remote.getGlobal("sharedObj").frmMain.webContents.executeJavaScript(`set_rolodex_pink(${JSON.stringify(this_line_number)})`);
+            }
 
             $("#lookup_rows").html(lookup_string);
 
@@ -170,8 +181,7 @@
             $("#btnCloseWindow").on('click', () => {
                 save_data();
                 
-                var this_window = remote.getCurrentWindow();
-                this_window.close();
+                remote.getGlobal("sharedObj").frmClientInfo.close();
 
             });
 
