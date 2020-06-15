@@ -63,6 +63,12 @@
             $("#btnLinkClient").on("click", () => {
 
                 var company_or_contact_name = $("#inClients").val();
+                if(company_or_contact_name == "")
+                {
+                    alert("Please enter company or contact name to link " + this_lookup_number + " to.");
+                    return;
+                }
+
                 get_record_id_from_company_or_contact_name(company_or_contact_name, this_lookup_number, this_line_number);
                 
                 remote.getGlobal("sharedObj").frmMain.webContents.executeJavaScript(`set_rolodex_green(${JSON.stringify(this_line_number)})`);

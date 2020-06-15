@@ -256,9 +256,6 @@ function call_on_hook(line, datetime)
     // Offset for array
     line = line - 1;
 
-    // Stop blinking line image
-    var str_updater = outputs[line][o_img_line];
-
     str_updater = outputs[line][o_time];
     $("#" + str_updater).text(datetime);
 
@@ -317,8 +314,9 @@ function call_end(line, datetime, number, name)
     // Offset for array
     line = line - 1;
 
-    // Keep ring image same
-    // ---
+    // Stop ringing if unanswered
+    var str_updater = outputs[line][o_img_line];
+    $("#" + str_updater).removeClass();
 
     // Update panel
     var str_updater = outputs[line][o_pan];
